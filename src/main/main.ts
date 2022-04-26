@@ -1,10 +1,11 @@
+/* eslint-disable @typescript-eslint/no-shadow */
+/* eslint-disable vars-on-top */
 /* eslint global-require: off, no-console: off, promise/always-return: off */
 
 import path from 'path';
 import { app, BrowserWindow, shell } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
-import MenuBuilder from './menu';
 import { resolveHtmlPath } from './util';
 
 export default class AppUpdater {
@@ -85,9 +86,6 @@ const createWindow = async () => {
     mainWindow = null;
   });
 
-  const menuBuilder = new MenuBuilder(mainWindow);
-  menuBuilder.buildMenu();
-
   mainWindow.setMenu(null);
 
   // Open urls in the user's browser
@@ -106,6 +104,27 @@ app.on('window-all-closed', () => {
   // after all windows have been closed
   if (process.platform !== 'darwin') {
     app.quit();
+  }
+});
+
+// Open third-party links in browser
+app.on('web-contents-created', (e, contents) => {
+  if (contents.getType() == 'webview') {
+    // eslint-disable-next-line no-var
+    var handleWillNavigate = (e, url) => {
+      if (!url.includes('onenote')) {
+        e.preventDefault();
+        const newWin = new BrowserWindow({
+          width: 1024,
+          height: 728,
+          minWidth: 600,
+          minHeight: 300,
+        });
+        newWin.loadURL(url);
+        newWin.setMenu(null);
+      }
+    };
+    contents.on('will-navigate', handleWillNavigate);
   }
 });
 
