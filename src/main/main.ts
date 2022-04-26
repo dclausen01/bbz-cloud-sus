@@ -109,7 +109,7 @@ app.on('window-all-closed', () => {
 
 // Open third-party links in browser
 app.on('web-contents-created', (e, contents) => {
-  if (contents.getType() == 'webview') {
+  if (contents.getType() === 'webview') {
     // eslint-disable-next-line no-var
     var handleWillNavigate = (e, url) => {
       if (!url.includes('onenote')) {
