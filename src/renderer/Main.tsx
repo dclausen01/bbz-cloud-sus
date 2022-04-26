@@ -185,7 +185,7 @@ export default class Main extends React.Component {
               <h1>Herzlich Willkommen!</h1>
             </p>
             <p>
-              In Rendsburg sind es aktuell <span id="temperature" />
+              In Rendsburg-Eckernförde sind es aktuell <span id="temperature" />
               °C
             </p>
           </header>
