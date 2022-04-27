@@ -50,6 +50,7 @@ export default class Main extends React.Component {
       const links = {
         schulcloud: {
           icon: 'https://app.schul.cloud/favicon.ico?v=4',
+          // icon: "",
           url: 'https://app.schul.cloud/app#/chats',
           teacher: false,
           enabled: true,
@@ -146,7 +147,7 @@ export default class Main extends React.Component {
               id="wv-${key}"
               class="wv web-${key}"
               src="${e.url}"
-              style="display:inline-flex;width:100%;height:77.5vh;"></webview>`
+              style="display:inline-flex; width:100%; height:89.5vh;"></webview>`
             );
           }
           $('#buttons').append(
