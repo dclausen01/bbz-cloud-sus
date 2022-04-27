@@ -135,7 +135,7 @@ export default class Main extends React.Component {
               id="wv-${key}"
               class="wv web-${key}"
               src="${e.url}"
-              style="display:inline-flex;width:100%;height:77.5vh;"></webview>`
+              style="display:inline-flex;width:100%;height:89.5vh;"></webview>`
             );
           }
           if (e.teacher === false) {
