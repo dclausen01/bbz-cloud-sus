@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-use-before-define */
+/* eslint-disable no-var */
 /* eslint-disable no-console */
 /* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
 /* eslint-disable func-names */
@@ -176,6 +178,14 @@ export default class Main extends React.Component {
         }
       }
     }, 3000);
+
+    document.addEventListener('keydown', (event) => {
+      if (event.ctrlKey && event.keyCode === 32) {
+        $('#doge').html(
+          '<video src="https://f001.backblazeb2.com/file/koyuspace-media/cache/media_attachments/files/108/216/721/989/948/797/original/4523bd1f0de68193.mp4" width="640" height="480" autoplay></video>'
+        );
+      }
+    });
   }
 
   render() {
@@ -207,12 +217,9 @@ export default class Main extends React.Component {
           </header>
           <div id="content">
             <div id="views" />
-            <img
-              style={{ marginLeft: '120px' }}
-              src={doge}
-              id="doge"
-              alt="Doge"
-            />
+            <div id="doge">
+              <img style={{ marginLeft: '120px' }} src={doge} alt="Doge" />
+            </div>
           </div>
         </div>
         <div id="loading">
