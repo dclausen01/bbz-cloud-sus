@@ -156,3 +156,9 @@ h1 {
 #main {
   text-align: center;
 }
+
+.app img {
+  background: #fff;
+  padding: 4px;
+  border-radius: 4px;
+}

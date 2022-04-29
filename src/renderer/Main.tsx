@@ -1,8 +1,10 @@
+/* eslint-disable no-console */
 /* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
 /* eslint-disable func-names */
 import React from 'react';
 import $ from 'jquery';
 import monkey from '../../assets/monkey.png';
+import doge from '../../assets/doge.png'; // TODO: Replace doge with something more suitable. Might be fine though, because everybody likes dogs.
 
 function reloadPage() {
   window.location.reload();
@@ -34,8 +36,8 @@ export default class Main extends React.Component {
       try {
         $.get(
           'https://api.openweathermap.org/data/2.5/weather?q=Rendsburg&units=metric&appid=735f03336131c3e5700d4e07662d570c',
-          function (data) {
-            $('#temperature').html(Math.round(data.main.temp));
+          function (data: { main: { temp: number } }) {
+            $('#temperature').html(String(Math.round(data.main.temp)));
           }
         );
       } catch (e) {
@@ -45,7 +47,7 @@ export default class Main extends React.Component {
     window.setTimeout(() => {
       $('#loading').hide();
       $('#main').show();
-      $('body').css('background', '#fff');
+      $('body').css('background', `#fff`);
       const isTeacher = true;
       const links = {
         schulcloud: {
@@ -128,7 +130,7 @@ export default class Main extends React.Component {
         if (e.enabled) {
           if (e.teacher === true && isTeacher === true) {
             $('#apps').append(
-              `<a onClick="changeUrl('${key}')" target="_blank" class="link-${key}" style="cursor:pointer;"><img src="${e.icon}" height="32"></a>`
+              `<a onClick="changeUrl('${key}')" target="_blank" class="link-${key} app" style="cursor:pointer;"><img src="${e.icon}" height="24"></a>`
             );
             $('#views').append(
               `<webview
@@ -140,7 +142,7 @@ export default class Main extends React.Component {
           }
           if (e.teacher === false) {
             $('#apps').append(
-              `<a onClick="changeUrl('${key}')" target="_blank" class="link-${key}" style="cursor:pointer;"><img src="${e.icon}" height="32"></a>`
+              `<a onClick="changeUrl('${key}')" target="_blank" class="link-${key} app" style="cursor:pointer;"><img src="${e.icon}" height="24"></a>`
             );
             $('#views').append(
               `<webview
@@ -151,7 +153,7 @@ export default class Main extends React.Component {
             );
           }
           $('#buttons').append(
-            `<span onClick="reloadView('${key}')" class="wvbr webbr-${key}" style="cursor:pointer;"><img height="22" style="vertical-align:middle;" src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iaXNvLTg4NTktMSI/Pg0KPCEtLSBHZW5lcmF0b3I6IEFkb2JlIElsbHVzdHJhdG9yIDE5LjAuMCwgU1ZHIEV4cG9ydCBQbHVnLUluIC4gU1ZHIFZlcnNpb246IDYuMDAgQnVpbGQgMCkgIC0tPg0KPHN2ZyB2ZXJzaW9uPSIxLjEiIGlkPSJDYXBhXzEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4Ig0KCSB2aWV3Qm94PSIwIDAgNDg5LjUzMyA0ODkuNTMzIiBzdHlsZT0iZW5hYmxlLWJhY2tncm91bmQ6bmV3IDAgMCA0ODkuNTMzIDQ4OS41MzM7IiB4bWw6c3BhY2U9InByZXNlcnZlIj4NCjxnPg0KCTxwYXRoIGQ9Ik0yNjguMTc1LDQ4OC4xNjFjOTguMi0xMSwxNzYuOS04OS41LDE4OC4xLTE4Ny43YzE0LjctMTI4LjQtODUuMS0yMzcuNy0yMTAuMi0yMzkuMXYtNTcuNmMwLTMuMi00LTQuOS02LjctMi45DQoJCWwtMTE4LjYsODcuMWMtMiwxLjUtMiw0LjQsMCw1LjlsMTE4LjYsODcuMWMyLjcsMiw2LjcsMC4yLDYuNy0yLjl2LTU3LjVjODcuOSwxLjQsMTU4LjMsNzYuMiwxNTIuMywxNjUuNg0KCQljLTUuMSw3Ni45LTY3LjgsMTM5LjMtMTQ0LjcsMTQ0LjJjLTgxLjUsNS4yLTE1MC44LTUzLTE2My4yLTEzMGMtMi4zLTE0LjMtMTQuOC0yNC43LTI5LjItMjQuN2MtMTcuOSwwLTMxLjksMTUuOS0yOS4xLDMzLjYNCgkJQzQ5LjU3NSw0MTguOTYxLDE1MC44NzUsNTAxLjI2MSwyNjguMTc1LDQ4OC4xNjF6Ii8+DQo8L2c+DQo8Zz4NCjwvZz4NCjxnPg0KPC9nPg0KPGc+DQo8L2c+DQo8Zz4NCjwvZz4NCjxnPg0KPC9nPg0KPGc+DQo8L2c+DQo8Zz4NCjwvZz4NCjxnPg0KPC9nPg0KPGc+DQo8L2c+DQo8Zz4NCjwvZz4NCjxnPg0KPC9nPg0KPGc+DQo8L2c+DQo8Zz4NCjwvZz4NCjxnPg0KPC9nPg0KPGc+DQo8L2c+DQo8L3N2Zz4NCg=="></span>`
+            `<span onClick="reloadView('${key}')" class="wvbr webbr-${key}" style="cursor:pointer;"><img height="22" style="vertical-align:middle;" src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iaXNvLTg4NTktMSI/Pgo8IS0tIEdlbmVyYXRvcjogQWRvYmUgSWxsdXN0cmF0b3IgMTkuMC4wLCBTVkcgRXhwb3J0IFBsdWctSW4gLiBTVkcgVmVyc2lvbjogNi4wMCBCdWlsZCAwKSAgLS0+CjxzdmcgdmVyc2lvbj0iMS4xIiBpZD0iQ2FwYV8xIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB4PSIwcHgiIHk9IjBweCIKCSB2aWV3Qm94PSIwIDAgNDg5LjUzMyA0ODkuNTMzIiBzdHlsZT0iZW5hYmxlLWJhY2tncm91bmQ6bmV3IDAgMCA0ODkuNTMzIDQ4OS41MzM7IiB4bWw6c3BhY2U9InByZXNlcnZlIj4KPGc+Cgk8cGF0aCBkPSJNMjY4LjE3NSw0ODguMTYxYzk4LjItMTEsMTc2LjktODkuNSwxODguMS0xODcuN2MxNC43LTEyOC40LTg1LjEtMjM3LjctMjEwLjItMjM5LjF2LTU3LjZjMC0zLjItNC00LjktNi43LTIuOQoJCWwtMTE4LjYsODcuMWMtMiwxLjUtMiw0LjQsMCw1LjlsMTE4LjYsODcuMWMyLjcsMiw2LjcsMC4yLDYuNy0yLjl2LTU3LjVjODcuOSwxLjQsMTU4LjMsNzYuMiwxNTIuMywxNjUuNgoJCWMtNS4xLDc2LjktNjcuOCwxMzkuMy0xNDQuNywxNDQuMmMtODEuNSw1LjItMTUwLjgtNTMtMTYzLjItMTMwYy0yLjMtMTQuMy0xNC44LTI0LjctMjkuMi0yNC43Yy0xNy45LDAtMzEuOSwxNS45LTI5LjEsMzMuNgoJCUM0OS41NzUsNDE4Ljk2MSwxNTAuODc1LDUwMS4yNjEsMjY4LjE3NSw0ODguMTYxeiIgc3R5bGU9ImZpbGw6I2ZmZjsiLz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8L3N2Zz4K"></span>`
           );
           $('#buttons').append(
             `<span onClick="back('${key}')" class="wvbb webbb-${key}" style="cursor:pointer;vertical-align:middle;font-size:22pt;font-weight:bold;margin-left:10px;">&larr;</span>`
@@ -197,6 +199,12 @@ export default class Main extends React.Component {
           </header>
           <div id="content">
             <div id="views" />
+            <img
+              style={{ marginLeft: '120px' }}
+              src={doge}
+              id="doge"
+              alt="Doge"
+            />
           </div>
         </div>
         <div id="loading">
