@@ -51,7 +51,7 @@ export default class Main extends React.Component {
       const isTeacher = true;
       const links = {
         schulcloud: {
-          icon: 'https://app.schul.cloud/favicon.ico?v=4',
+          icon: 'data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+CjwhLS0gR2VuZXJhdG9yOiBBZG9iZSBJbGx1c3RyYXRvciAyNS4yLjEsIFNWRyBFeHBvcnQgUGx1Zy1JbiAuIFNWRyBWZXJzaW9uOiA2LjAwIEJ1aWxkIDApICAtLT4KCjxzdmcKICAgdmVyc2lvbj0iMS4xIgogICBpZD0iRWJlbmVfMSIKICAgeD0iMHB4IgogICB5PSIwcHgiCiAgIHZpZXdCb3g9IjAgMCAxMTYuMiAxMTYuMiIKICAgeG1sOnNwYWNlPSJwcmVzZXJ2ZSIKICAgc29kaXBvZGk6ZG9jbmFtZT0ic2NodWxjbG91ZC5zdmciCiAgIHdpZHRoPSIxMTYuMiIKICAgaGVpZ2h0PSIxMTYuMiIKICAgaW5rc2NhcGU6dmVyc2lvbj0iMS4xLjIgKDBhMDBjZjUzMzksIDIwMjItMDItMDQpIgogICB4bWxuczppbmtzY2FwZT0iaHR0cDovL3d3dy5pbmtzY2FwZS5vcmcvbmFtZXNwYWNlcy9pbmtzY2FwZSIKICAgeG1sbnM6c29kaXBvZGk9Imh0dHA6Ly9zb2RpcG9kaS5zb3VyY2Vmb3JnZS5uZXQvRFREL3NvZGlwb2RpLTAuZHRkIgogICB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciCiAgIHhtbG5zOnN2Zz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxkZWZzCiAgIGlkPSJkZWZzMTYiIC8+PHNvZGlwb2RpOm5hbWVkdmlldwogICBpZD0ibmFtZWR2aWV3MTQiCiAgIHBhZ2Vjb2xvcj0iI2ZmZmZmZiIKICAgYm9yZGVyY29sb3I9IiM2NjY2NjYiCiAgIGJvcmRlcm9wYWNpdHk9IjEuMCIKICAgaW5rc2NhcGU6cGFnZXNoYWRvdz0iMiIKICAgaW5rc2NhcGU6cGFnZW9wYWNpdHk9IjAuMCIKICAgaW5rc2NhcGU6cGFnZWNoZWNrZXJib2FyZD0iMCIKICAgc2hvd2dyaWQ9ImZhbHNlIgogICB3aWR0aD0iMTE2LjJweCIKICAgaW5rc2NhcGU6em9vbT0iNi4zMjUzMDE0IgogICBpbmtzY2FwZTpjeD0iNTguMDk5OTk4IgogICBpbmtzY2FwZTpjeT0iNTguMDk5OTk4IgogICBpbmtzY2FwZTp3aW5kb3ctd2lkdGg9IjE2MDYiCiAgIGlua3NjYXBlOndpbmRvdy1oZWlnaHQ9Ijk4NiIKICAgaW5rc2NhcGU6d2luZG93LXg9Ijc0IgogICBpbmtzY2FwZTp3aW5kb3cteT0iMjciCiAgIGlua3NjYXBlOndpbmRvdy1tYXhpbWl6ZWQ9IjEiCiAgIGlua3NjYXBlOmN1cnJlbnQtbGF5ZXI9IkViZW5lXzEiIC8+CjxzdHlsZQogICB0eXBlPSJ0ZXh0L2NzcyIKICAgaWQ9InN0eWxlMiI+Cgkuc3Qxe2ZpbGw6I2ZmZmZmZjt9Cjwvc3R5bGU+CjxnCiAgIGlkPSJfeDMxXyIKICAgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMC41NDk5OTg0NywxNC4zNDk5OTgpIj4KCTxnCiAgIGlkPSJnMTAiPgoJCTxnCiAgIGlkPSJnNiI+CgkJCTxwYXRoCiAgIGNsYXNzPSJzdDEiCiAgIGQ9Ik0gMTMuNiwyNS41IEMgMTQuMSwyNS4zIDE0LjUsMjUgMTQuOCwyNC44IDIwLjIsMjIgMjYuNSwyMC41IDMyLjksMjAuNSBIIDMzIHYgMCAwIGMgMTguNywwIDMzLjgsMTIuNiAzMy44LDI4IDAsOC42IC00LjksMTYuNSAtMTIuNywyMS43IC0wLjgsMC41IC0wLjQsMS43IDAuNSwxLjcgaCAyOS41IGMgMC41LDAgMSwwIDEuNSwtMC4xIDAuNiwwLjEgMS4yLDAuMSAxLjgsMC4xIDEzLjIsMCAyNCwtMTAuNyAyNCwtMjQgMCwtMTEuOSAtOC42LC0yMS43IC0yMCwtMjMuNiAwLjIsLTEuMSAwLjQsLTIuMyAwLjQsLTMuNSBDIDkxLjgsMTAuNyA4My4xLDIuNSA3Mi41LDIuNSA2Ni40LDIuNSA2MC45LDUuMyA1Ny40LDkuNCA1MS42LDAuNCAzNi40LDAgMzYuNCwwIDIyLjQsMCAxMS45LDExLjEgMTEuOSwyNC44IGMgMCwwIDAsMS41IDEuNywwLjcgeiIKICAgaWQ9InBhdGg0IiAvPgoJCTwvZz4KCQk8cGF0aAogICBjbGFzcz0ic3QxIgogICBkPSJNIDM4LjcsNzEuMiBDIDM5LjMsNzEuMSA0MCw3MSA0MC42LDcwLjggNTMuMiw2OC4yIDYyLjEsNTkgNjIuMSw0OC41IDYyLjEsMzUuNyA0OS4xLDI1LjMgMzMsMjUuMiBjIDAsMCAtMC4xLDAgLTAuMSwwIC01LjksMCAtMTEuMywxLjQgLTE1LjksMy44IC0xLjMsMC43IC0yLjUsMS40IC0zLjcsMi4yIC01LjksNC4yIC05LjUsMTAuMyAtOS42LDE3LjEgMCw4LjIgNC4zLDE2IDEzLjIsMjAuMiBsIDEuNywwLjggLTAuNCwxLjEgLTMuNSwxNS4xIGMgLTAuMywxLjEgMC41LDIgMS41LDIgMC4zLDAgMC43LC0wLjEgMSwtMC40IEwgMzIuNiw3MS44IFoiCiAgIGlkPSJwYXRoOCIgLz4KCTwvZz4KPC9nPgo8L3N2Zz4=',
           // icon: "",
           url: 'https://app.schul.cloud/app#/chats',
           teacher: false,
@@ -89,7 +89,7 @@ export default class Main extends React.Component {
           enabled: true,
         },
         miro: {
-          icon: "data:image/svg+xml,%3Csvg viewBox='0 0 89 32' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Ctitle%3EMiro Logo%3C/title%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M77.9685 9.16508C84.5 9.16508 88.8269 13.7068 88.8269 20.5615C88.8269 27.4161 84.5 32 77.9685 32C71.1869 32 66.6521 27.4161 66.6521 20.5615C66.6521 13.7068 71.1869 9.16508 77.9685 9.16508ZM43.1087 9.62509V31.5399L38.2264 30.5361V10.587L43.1087 9.62509ZM62.6581 9.11606V14.2592L59.8447 14.7806C57.4273 15.2448 55.8727 16.5023 55.8727 19.285V31.5399L50.9904 30.5361V18.5384C50.9904 12.5838 54.4774 10.8125 59.8447 9.57615L62.6581 9.11606ZM10.7744 9.16508C12.6904 9.16508 15.04 10.2366 16.3647 12.1567C17.6944 10.4081 19.9172 9.26074 22.6452 9.2235C26.079 9.17669 30.3447 11.3398 30.3447 17.8223V31.5399L25.4624 30.5361V17.8223C25.4624 15.6475 23.8902 14.1 21.5732 14.1C19.2561 14.1 17.6839 15.6475 17.6839 17.8223V31.5399L12.8017 30.5361V17.8223C12.8017 15.6475 11.2295 14.1 8.91255 14.1C6.55409 14.1 4.98187 15.6475 4.98187 17.8223V31.5399L0.0996094 30.5361V10.587L4.98187 9.62509V11.8835C6.34721 10.2106 8.41603 9.16508 10.7744 9.16508ZM77.9685 13.7909C74.1822 13.7909 71.6445 16.4823 71.6445 20.5615C71.6445 24.6407 74.1822 27.3741 77.9685 27.3741C81.5041 27.3741 83.834 24.6407 83.834 20.5615C83.834 16.4823 81.5041 13.7909 77.9685 13.7909ZM40.7712 0C42.5477 0 43.7244 1.23521 43.7244 3.09959C43.7244 4.96387 42.5477 6.21058 40.7712 6.21058C38.9267 6.21058 37.6935 4.96387 37.6935 3.09959C37.6935 1.23521 38.9267 0 40.7712 0Z' fill='%23050038'%3E%3C/path%3E%3C/svg%3E",
+          icon: 'https://albionacademy.de/wp-content/uploads/2021/05/Miro-Logo.png',
           url: 'https://miro.com/app/dashboard/',
           teacher: true,
           enabled: true,
@@ -137,7 +137,8 @@ export default class Main extends React.Component {
               id="wv-${key}"
               class="wv web-${key}"
               src="${e.url}"
-              style="display:inline-flex;width:100%;height:89.5vh;"></webview>`
+              style="display:inline-flex;width:100%;height:89.5vh;"
+              allowpopups></webview>`
             );
           }
           if (e.teacher === false) {
@@ -149,7 +150,8 @@ export default class Main extends React.Component {
               id="wv-${key}"
               class="wv web-${key}"
               src="${e.url}"
-              style="display:inline-flex; width:100%; height:89.5vh;"></webview>`
+              style="display:inline-flex; width:100%; height:89.5vh;"
+              allowpopups></webview>`
             );
           }
           $('#buttons').append(

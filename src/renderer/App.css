@@ -70,10 +70,16 @@ header {
   margin-left: 16px;
 }
 
+.link-untis img {
+  background: #ff9900 !important;
+}
+
 .link-miro img {
-  height: 16px;
-  vertical-align: top;
-  margin-top: 5px;
+  background: #ffcf00 !important;
+}
+
+.link-schulcloud img {
+  background: #fac229 !important;
 }
 
 h1,

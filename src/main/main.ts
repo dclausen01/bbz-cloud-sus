@@ -111,8 +111,8 @@ app.on('window-all-closed', () => {
 app.on('web-contents-created', (e, contents) => {
   if (contents.getType() === 'webview') {
     // eslint-disable-next-line no-var
-    var handleWillNavigate = (e, url) => {
-      if (url.includes('msoffice') || url.includes('onlyoffice')) {
+    var handleNewWindow = (e, url) => {
+      if (!url.includes('onedrive')) {
         e.preventDefault();
         const newWin = new BrowserWindow({
           width: 1024,
@@ -122,9 +122,12 @@ app.on('web-contents-created', (e, contents) => {
         });
         newWin.loadURL(url);
         newWin.setMenu(null);
+      } else {
+        e.preventDefault();
+        contents.loadURL(url);
       }
     };
-    contents.on('will-navigate', handleWillNavigate);
+    contents.on('new-window', handleNewWindow);
   }
 });
 
