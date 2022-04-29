@@ -13,13 +13,13 @@ export default class Main extends React.Component {
     $('#main').hide();
     $('#error').hide();
     $('body').css('background', '#173a64');
-    let isOnline = true;
+    // let isOnline = true;
     // eslint-disable-next-line promise/catch-or-return
     fetch(`https://mastodon.social/api/v1/instance?d=${Date.now()}`)
       .then((response) => {
         // eslint-disable-next-line promise/always-return
         if (!response.ok) {
-          isOnline = false;
+          // isOnline = false;
         }
       })
       .catch(() => {
@@ -38,7 +38,9 @@ export default class Main extends React.Component {
             $('#temperature').html(Math.round(data.main.temp));
           }
         );
-      } catch (e) {}
+      } catch (e) {
+        console.log(e);
+      }
     });
     window.setTimeout(() => {
       $('#loading').hide();
@@ -46,10 +48,18 @@ export default class Main extends React.Component {
       $('body').css('background', '#fff');
       const isTeacher = true;
       const links = {
-        kurzelinks: {
-          icon: 'https://www.freeiconspng.com/uploads/link-icon-png-14.png',
-          url: 'https://kurzelinks.de',
-          teacher: true,
+        schulcloud: {
+          icon: 'https://app.schul.cloud/favicon.ico?v=4',
+          // icon: "",
+          url: 'https://app.schul.cloud/app#/chats',
+          teacher: false,
+          enabled: true,
+        },
+        portal: {
+          // icon: 'https://c.tenor.com/wE_qxJqpxj0AAAAd/nether-portal-minecraft.gif',
+          icon: 'https://codebrightly.com/wp-content/uploads/2020/04/Moodle.png',
+          url: 'https://portal.bbz-rd-eck.com',
+          teacher: false,
           enabled: true,
         },
         msoffice: {
@@ -76,28 +86,10 @@ export default class Main extends React.Component {
           teacher: false,
           enabled: true,
         },
-        wbo: {
-          icon: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32' style='background:%23fff;'%3E%3Ctext style='fill:%23000;font-size:12px;font-family:sans-serif;font-weight:bold;' x='1' y='20'%3EWBO%3C/text%3E%3C/svg%3E",
-          url: 'https://wbo.ophir.dev/',
-          teacher: true,
-          enabled: true,
-        },
         miro: {
           icon: "data:image/svg+xml,%3Csvg viewBox='0 0 89 32' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Ctitle%3EMiro Logo%3C/title%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M77.9685 9.16508C84.5 9.16508 88.8269 13.7068 88.8269 20.5615C88.8269 27.4161 84.5 32 77.9685 32C71.1869 32 66.6521 27.4161 66.6521 20.5615C66.6521 13.7068 71.1869 9.16508 77.9685 9.16508ZM43.1087 9.62509V31.5399L38.2264 30.5361V10.587L43.1087 9.62509ZM62.6581 9.11606V14.2592L59.8447 14.7806C57.4273 15.2448 55.8727 16.5023 55.8727 19.285V31.5399L50.9904 30.5361V18.5384C50.9904 12.5838 54.4774 10.8125 59.8447 9.57615L62.6581 9.11606ZM10.7744 9.16508C12.6904 9.16508 15.04 10.2366 16.3647 12.1567C17.6944 10.4081 19.9172 9.26074 22.6452 9.2235C26.079 9.17669 30.3447 11.3398 30.3447 17.8223V31.5399L25.4624 30.5361V17.8223C25.4624 15.6475 23.8902 14.1 21.5732 14.1C19.2561 14.1 17.6839 15.6475 17.6839 17.8223V31.5399L12.8017 30.5361V17.8223C12.8017 15.6475 11.2295 14.1 8.91255 14.1C6.55409 14.1 4.98187 15.6475 4.98187 17.8223V31.5399L0.0996094 30.5361V10.587L4.98187 9.62509V11.8835C6.34721 10.2106 8.41603 9.16508 10.7744 9.16508ZM77.9685 13.7909C74.1822 13.7909 71.6445 16.4823 71.6445 20.5615C71.6445 24.6407 74.1822 27.3741 77.9685 27.3741C81.5041 27.3741 83.834 24.6407 83.834 20.5615C83.834 16.4823 81.5041 13.7909 77.9685 13.7909ZM40.7712 0C42.5477 0 43.7244 1.23521 43.7244 3.09959C43.7244 4.96387 42.5477 6.21058 40.7712 6.21058C38.9267 6.21058 37.6935 4.96387 37.6935 3.09959C37.6935 1.23521 38.9267 0 40.7712 0Z' fill='%23050038'%3E%3C/path%3E%3C/svg%3E",
           url: 'https://miro.com/app/dashboard/',
           teacher: true,
-          enabled: true,
-        },
-        schulcloud: {
-          icon: 'https://app.schul.cloud/favicon.ico?v=4',
-          url: 'https://app.schul.cloud/app#/chats',
-          teacher: false,
-          enabled: true,
-        },
-        portal: {
-          icon: 'https://c.tenor.com/wE_qxJqpxj0AAAAd/nether-portal-minecraft.gif',
-          url: 'https://portal.bbz-rd-eck.com',
-          teacher: false,
           enabled: true,
         },
         owa: {
@@ -115,6 +107,12 @@ export default class Main extends React.Component {
         plagscan: {
           icon: 'data:image/png;base64,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',
           url: 'https://my.plagaware.com/dashboard',
+          teacher: true,
+          enabled: true,
+        },
+        kurzelinks: {
+          icon: 'https://www.freeiconspng.com/uploads/link-icon-png-14.png',
+          url: 'https://kurzelinks.de',
           teacher: true,
           enabled: true,
         },
@@ -137,7 +135,7 @@ export default class Main extends React.Component {
               id="wv-${key}"
               class="wv web-${key}"
               src="${e.url}"
-              style="display:inline-flex;width:100%;height:77.5vh;"></webview>`
+              style="display:inline-flex;width:100%;height:89.5vh;"></webview>`
             );
           }
           if (e.teacher === false) {
@@ -149,7 +147,7 @@ export default class Main extends React.Component {
               id="wv-${key}"
               class="wv web-${key}"
               src="${e.url}"
-              style="display:inline-flex;width:100%;height:77.5vh;"></webview>`
+              style="display:inline-flex; width:100%; height:89.5vh;"></webview>`
             );
           }
           $('#buttons').append(
@@ -175,24 +173,29 @@ export default class Main extends React.Component {
       <div>
         <div id="main">
           <header>
-            <p>
-              <img
-                src="https://www.bbz-rd-eck.de/wp-content/uploads/2018/09/BBZ-Logo-Master.png"
-                alt="BBZ Logo"
-                height="32"
-                id="logo"
-              />
-              <h1>Herzlich Willkommen!</h1>
-            </p>
-            <p>
-              In Rendsburg-Eckernförde sind es aktuell <span id="temperature" />
-              °C
-            </p>
+            <div id="container">
+              <div id="headnote">
+                <p>
+                  <img
+                    src="https://www.bbz-rd-eck.de/wp-content/uploads/2018/09/BBZ-Logo-Master.png"
+                    alt="BBZ Logo"
+                    height="32"
+                    id="logo"
+                  />
+                  <h1>BBZ Cloud</h1>
+                </p>
+                <p>
+                  In Rendsburg-Eckernförde sind es aktuell{' '}
+                  <span id="temperature" />
+                  °C
+                </p>
+              </div>
+              <div id="apps" />
+              <div id="buttons" />
+              <br />
+            </div>
           </header>
           <div id="content">
-            <div id="buttons" />
-            <div id="apps" />
-            <br />
             <div id="views" />
           </div>
         </div>

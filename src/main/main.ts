@@ -112,7 +112,7 @@ app.on('web-contents-created', (e, contents) => {
   if (contents.getType() === 'webview') {
     // eslint-disable-next-line no-var
     var handleWillNavigate = (e, url) => {
-      if (!url.includes('onenote')) {
+      if (url.includes('msoffice') || url.includes('onlyoffice')) {
         e.preventDefault();
         const newWin = new BrowserWindow({
           width: 1024,
