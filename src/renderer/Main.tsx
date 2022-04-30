@@ -96,6 +96,12 @@ export default class Main extends React.Component {
           teacher: true,
           enabled: true,
         },
+        bbb: {
+          icon: 'https://canvas.rutgers.edu/wp-content/uploads/2019/01/BigBlueButton.png',
+          url: 'https://bbb.bbz-rd-eck.de',
+          teacher: true,
+          enabled: true,
+        },
         owa: {
           icon: 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/df/Microsoft_Office_Outlook_%282018%E2%80%93present%29.svg/2203px-Microsoft_Office_Outlook_%282018%E2%80%93present%29.svg.png',
           url: 'https://exchange.bbz-rd-eck.de/owa/#path=/mail',
