@@ -11,6 +11,7 @@ header {
   background: #173a64;
   color: #fff;
   padding: 5px;
+  height: 60px;
 }
 
 #logo {
@@ -167,4 +168,12 @@ h1 {
   background: #fff;
   padding: 4px;
   border-radius: 4px;
+}
+
+.wv {
+  display:inline-flex;
+  width: calc(100vw + 2px);
+  height:calc(100vh - 70px);
+  margin-left: -4px;
+  margin-top: -4px;
 }

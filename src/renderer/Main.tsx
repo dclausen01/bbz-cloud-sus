@@ -1,3 +1,4 @@
+/* eslint-disable no-restricted-syntax */
 /* eslint-disable @typescript-eslint/no-use-before-define */
 /* eslint-disable no-var */
 /* eslint-disable no-console */
@@ -139,7 +140,7 @@ export default class Main extends React.Component {
           enabled: true,
         },
       };
-      // eslint-disable-next-line no-restricted-syntax
+      // TODO: Add menu for smaller screens
       for (const [key, e] of Object.entries(links)) {
         if (e.enabled) {
           if (e.teacher === true && isTeacher === true) {
@@ -151,7 +152,6 @@ export default class Main extends React.Component {
               id="wv-${key}"
               class="wv web-${key}"
               src="${e.url}"
-              style="display:inline-flex;width:100%;height:89.5vh;"
               allowpopups></webview>`
             );
           }
@@ -164,7 +164,6 @@ export default class Main extends React.Component {
               id="wv-${key}"
               class="wv web-${key}"
               src="${e.url}"
-              style="display:inline-flex; width:100%; height:89.5vh;"
               allowpopups></webview>`
             );
           }
