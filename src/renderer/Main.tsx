@@ -133,9 +133,15 @@ export default class Main extends React.Component {
           teacher: true,
           enabled: true,
         },
-        Handbuch: {
+        BBZHandbuch: {
           icon: 'https://icon-library.com/images/user-manual-icon/user-manual-icon-25.jpg',
           url: 'https://portal.bbz-rd-eck.com/course/view.php?id=108',
+          teacher: true,
+          enabled: true,
+        },
+        Anleitung: {
+          icon: 'https://cdn.pixabay.com/photo/2013/07/12/17/38/compass-152124_960_720.png',
+          url: 'https://www.taskcards.de/board/3779c8a4-52de-476c-aa70-6a430326469d?token=43125b5e-2fed-4e15-a6af-b7c46f6299c0',
           teacher: true,
           enabled: true,
         },
