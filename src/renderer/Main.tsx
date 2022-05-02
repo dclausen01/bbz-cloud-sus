@@ -153,7 +153,6 @@ export default class Main extends React.Component {
               class="wv web-${key}"
               src="${e.url}"
               style="display:inline-flex; width:100%; height:91.5vh;"
-              tooltip
               allowpopups></webview>`
             );
           }
@@ -167,7 +166,6 @@ export default class Main extends React.Component {
               class="wv web-${key}"
               src="${e.url}"
               style="display:inline-flex; width:100%; height:91.5vh;"
-              tooltip
               allowpopups></webview>`
             );
           }
