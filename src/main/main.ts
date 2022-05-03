@@ -193,8 +193,8 @@ app.on('web-contents-created', (e, contents) => {
           newWin.show();
         }
       } else {
-        e.preventDefault();
-        contents.loadURL(url);
+        // e.preventDefault();
+        // contents.loadURL(url);
       }
     }
   };
