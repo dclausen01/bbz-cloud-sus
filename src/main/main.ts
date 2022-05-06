@@ -199,10 +199,8 @@ app.on('web-contents-created', (e, contents) => {
     }
   };
   contents.on('new-window', handleNewWindow);
-  // contents.on('will-navigate', handleNewWindow);
 
-
-  /* var handleNavigation = (e, url) => {
+ /* var handleNavigation = (e, url) => {
     if (isDownloadType(url)) {
       e.preventDefault();
       var toLocalPath = path.resolve(
