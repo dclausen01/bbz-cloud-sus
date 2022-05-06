@@ -171,8 +171,8 @@ function isDownloadType(url: string) {
 app.on('web-contents-created', (e, contents) => {
   // eslint-disable-next-line no-var
   var handleNewWindow = (e, url) => {
-    if (url.includes('about:blank') || url.includes('download') || url.includes('file/download')) { 
-      if (url.includes('about:blank'|| url.includes('file/download'))) {
+    if (url.includes('about:blank') || url.includes('download')) { 
+      if (url.includes('about:blank')) {
         e.preventDefault();
       } else {
         contents.loadURL(url);
