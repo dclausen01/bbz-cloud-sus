@@ -171,8 +171,8 @@ function isDownloadType(url: string) {
 app.on('web-contents-created', (e, contents) => {
   // eslint-disable-next-line no-var
   var handleNewWindow = (e, url) => {
-    if (url.includes('about:blank') || url.includes('download')) {
-      if (url.includes('about:blank')) {
+    if (url.includes('about:blank') || url.includes('download') || url.includes('file/download')) { 
+      if (url.includes('about:blank'|| url.includes('file/download'))) {
         e.preventDefault();
       } else {
         contents.loadURL(url);
@@ -200,7 +200,7 @@ app.on('web-contents-created', (e, contents) => {
   };
   contents.on('new-window', handleNewWindow);
 
-  var handleNavigation = (e, url) => {
+  /* var handleNavigation = (e, url) => {
     if (isDownloadType(url)) {
       e.preventDefault();
       var toLocalPath = path.resolve(
@@ -219,8 +219,8 @@ app.on('web-contents-created', (e, contents) => {
       }
     }
   };
-  contents.on('will-navigate', handleNavigation);
-});
+  contents.on('will-navigate', handleNavigation); */
+}); 
 
 app
   .whenReady()
