@@ -1,3 +1,5 @@
+/* eslint-disable no-empty */
+/* eslint-disable no-inner-declarations */
 /* eslint-disable promise/catch-or-return */
 /* eslint-disable no-var */
 /* eslint-disable @typescript-eslint/no-shadow */
@@ -5,7 +7,7 @@
 /* eslint global-require: off, no-console: off, promise/always-return: off */
 
 import path from 'path';
-import { app, BrowserWindow, shell, dialog } from 'electron';
+import { app, BrowserWindow, shell, Notification, ipcMain } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
 import { resolveHtmlPath } from './util';
@@ -112,30 +114,6 @@ app.on('window-all-closed', () => {
   }
 });
 
-function download(url, dest) {
-  try {
-    var file = fs.createWriteStream(dest);
-    var request = https
-      .get(url, function (response) {
-        response.pipe(file);
-        file.on('finish', function () {
-          file.close(function () {
-            console.log('file saved.');
-            if (process.platform === 'linux') {
-              // TODO: Notifications
-            }
-          }); // close() is async, call cb after close completes.
-        });
-      })
-      .on('error', function (e) {
-        // Handle errors
-        fs.unlink(dest); // Delete the file async. (But we don't check the result)
-      });
-  } catch (e) {
-    console.error(e);
-  }
-}
-
 const downloadtypes = [
   '.mp4',
   '.mp3',
@@ -211,6 +189,27 @@ app.on('web-contents-created', (event, contents) => {
     }
   };
   contents.on('new-window', handleNewWindow);
+
+  function handleDownloads(event, item, webContents) {
+    item.on('done', (event, state) => {
+      if (state === 'completed') {
+        const RESOURCES_PATH = app.isPackaged
+          ? path.join(process.resourcesPath, 'assets')
+          : path.join(__dirname, '../../assets');
+        const getAssetPath = (...paths: string[]): string => {
+          return path.join(RESOURCES_PATH, ...paths);
+        };
+        new Notification({
+          title: 'BBZ-Cloud',
+          body: 'Download abgeschlossen.',
+          icon: getAssetPath('icon.png'),
+        }).show();
+      } else {
+        console.log(`Download failed: ${state}`);
+      }
+    });
+  }
+  contents.session.on('will-download', handleDownloads);
 });
 
 app
