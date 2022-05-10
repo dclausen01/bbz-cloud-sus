@@ -121,6 +121,9 @@ function download(url, dest) {
         file.on('finish', function () {
           file.close(function () {
             console.log('file saved.');
+            if (process.platform === 'linux') {
+              // TODO: Notifications
+            }
           }); // close() is async, call cb after close completes.
         });
       })
@@ -171,10 +174,20 @@ function isDownloadType(url: string) {
 app.on('web-contents-created', (event, contents) => {
   // eslint-disable-next-line no-var
   var handleNewWindow = (e, url) => {
-    if (url.includes('about:blank') || url.includes('download')) {
-      if (url.includes('about:blank')) {
-        // do nothing!
-      }
+    if (
+      url.includes('about:blank') ||
+      url.includes('download') ||
+      url.includes('sharepoint')
+    ) {
+      e.preventDefault();
+      const newWin = new BrowserWindow({
+        width: 1024,
+        height: 728,
+        minWidth: 600,
+        minHeight: 300,
+        show: false,
+      });
+      newWin.loadURL(url);
     } else if (!isDownloadType(url)) {
       if (!url.includes('onedrive')) {
         e.preventDefault();
