@@ -198,27 +198,6 @@ app.on('web-contents-created', (event, contents) => {
     }
   };
   contents.on('new-window', handleNewWindow);
-
-  /* var handleNavigation = (e, url) => {
-    if (isDownloadType(url)) {
-      e.preventDefault();
-      var toLocalPath = path.resolve(
-        app.getPath('downloads'),
-        path.basename(url)
-      );
-      var userChosenPath = dialog.showSaveDialog({
-        defaultPath: toLocalPath,
-      });
-      if (userChosenPath) {
-        userChosenPath.then((value) => {
-          if (isDownloadType(url)) {
-            download(url, value.filePath);
-          }
-        });
-      }
-    }
-  };
-  contents.on('will-navigate', handleNavigation); */
 });
 
 app
