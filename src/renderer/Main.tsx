@@ -7,7 +7,7 @@
 import React from 'react';
 import $ from 'jquery';
 import monkey from '../../assets/monkey.png';
-import doge from '../../assets/doge.png'; // TODO: Replace doge with something more suitable. Might be fine though, because everybody likes dogs.
+import doge from '../../assets/uebersicht.png'; // TODO: Replace doge with something more suitable. Might be fine though, because everybody likes dogs.
 
 function reloadPage() {
   window.location.reload();
@@ -142,7 +142,7 @@ export default class Main extends React.Component {
           <div id="content">
             <div id="views" />
             <div id="doge">
-              <img style={{ marginLeft: '120px' }} src={doge} alt="Doge" />
+              <img style={{ marginLeft: '10px', marginTop: '15px' }} height="790vh" src={doge} alt="Übersicht" />
             </div>
           </div>
         </div>
