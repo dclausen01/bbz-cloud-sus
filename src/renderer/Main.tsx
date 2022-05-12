@@ -142,7 +142,12 @@ export default class Main extends React.Component {
           <div id="content">
             <div id="views" />
             <div id="doge">
-              <img style={{ marginLeft: '10px', marginTop: '15px' }} height="790vh" src={doge} alt="Übersicht" />
+              <img
+                style={{ marginLeft: '10px', marginTop: '15px' }}
+                height="560"
+                src={doge}
+                alt="Übersicht"
+              />
             </div>
           </div>
         </div>
