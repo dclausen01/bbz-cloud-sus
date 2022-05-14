@@ -7,7 +7,7 @@
 /* eslint global-require: off, no-console: off, promise/always-return: off */
 
 import path from 'path';
-import { app, BrowserWindow, shell, Notification, ipcMain } from 'electron';
+import { app, BrowserWindow, shell, Notification, ipcMain, Menu } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
 import { resolveHtmlPath } from './util';
@@ -78,6 +78,8 @@ const createWindow = async () => {
 
   mainWindow.loadURL(resolveHtmlPath('index.html'));
 
+  Menu.setApplicationMenu(null);
+
   mainWindow.on('ready-to-show', () => {
     if (!mainWindow) {
       throw new Error('"mainWindow" is not defined');
@@ -139,6 +141,8 @@ const downloadtypes = [
   '.fls',
 ];
 
+const microshaftWords = ['onedrive', 'onenote', 'download.aspx'];
+
 function isDownloadType(url: string) {
   var isdt = false;
   downloadtypes.forEach((s) => {
@@ -149,26 +153,29 @@ function isDownloadType(url: string) {
   return isdt;
 }
 
+function isWinzigWeich(url: string) {
+  var isww = false;
+  microshaftWords.forEach((s) => {
+    if (url.includes(s)) {
+      isww = true;
+    }
+  });
+  return isww;
+}
+
 // Open third-party links in browser
 app.on('web-contents-created', (event, contents) => {
   // eslint-disable-next-line no-var
   var handleNewWindow = (e, url) => {
-    if (
-      url.includes('about:blank') ||
-      url.includes('download') ||
-      url.includes('sharepoint')
-    ) {
-      e.preventDefault();
-      const newWin = new BrowserWindow({
-        width: 1024,
-        height: 728,
-        minWidth: 600,
-        minHeight: 300,
-        show: false,
-      });
-      newWin.loadURL(url);
-    } else if (!isDownloadType(url)) {
-      if (!url.includes('onedrive')) {
+    if (isWinzigWeich(url) || url.includes('download.aspx')) {
+      mainWindow?.webContents.executeJavaScript(
+        `localStorage.setItem("url", "${url}");`
+      );
+      if (
+        url.includes('about:blank') ||
+        url.includes('download') ||
+        url.includes('sharepoint')
+      ) {
         e.preventDefault();
         const newWin = new BrowserWindow({
           width: 1024,
@@ -178,14 +185,26 @@ app.on('web-contents-created', (event, contents) => {
           show: false,
         });
         newWin.loadURL(url);
-        newWin.setMenu(null);
-        e.newGuest = newWin;
-        if (!url.includes('about:blank') || !url.includes('download')) {
-          newWin.show();
+      } else if (!isDownloadType(url)) {
+        if (!url.includes('onedrive')) {
+          e.preventDefault();
+          const newWin = new BrowserWindow({
+            width: 1024,
+            height: 728,
+            minWidth: 600,
+            minHeight: 300,
+            show: false,
+          });
+          newWin.loadURL(url);
+          newWin.setMenu(null);
+          e.newGuest = newWin;
+          if (!url.includes('about:blank') || !url.includes('download')) {
+            newWin.show();
+          }
+        } else {
+          e.preventDefault();
+          contents.loadURL(url);
         }
-      } else {
-        e.preventDefault();
-        contents.loadURL(url);
       }
     }
   };
