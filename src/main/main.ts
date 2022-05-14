@@ -136,6 +136,7 @@ const downloadtypes = [
   '.bin',
   '.sh',
   '.doc',
+  '.fls',
 ];
 
 function isDownloadType(url: string) {
@@ -156,7 +157,7 @@ app.on('web-contents-created', (event, contents) => {
       url.includes('about:blank') ||
       url.includes('download') ||
       url.includes('sharepoint')
-    ) { //TODO: Hier ist das Problem: Wenn wir nicht e.preventDefault verwenden, bekommen wir das Fenster nicht weg - wenn wir es verwenden, wird kein Fenster geworfen, wenn wir auf einen Link klicken.
+    ) {
       e.preventDefault();
       const newWin = new BrowserWindow({
         width: 1024,
