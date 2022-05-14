@@ -165,7 +165,7 @@ app.on('web-contents-created', (event, contents) => {
         minHeight: 300,
         show: false,
       });
-      newWin.loadURL(url); 
+      newWin.loadURL(url);
     } else if (!isDownloadType(url)) {
       if (!url.includes('onedrive')) {
         e.preventDefault();
