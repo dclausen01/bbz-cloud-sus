@@ -130,6 +130,7 @@ const downloadtypes = [
   '.opus',
   '.pdf',
   '.xls',
+  '.xlsx',
   '.ppt',
   '.zip',
   '.exe',
@@ -138,6 +139,7 @@ const downloadtypes = [
   '.bin',
   '.sh',
   '.doc',
+  '.docx',
   '.fls',
 ];
 
