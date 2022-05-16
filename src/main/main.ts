@@ -88,19 +88,26 @@ const createWindow = async () => {
     // Preference sections visible to the UI
     sections: [
       {
-        id: 'about',
-        label: 'About You',
-        icon: 'single-01', // See the list of available icons below
+        id: 'app-webviews',
+        label: 'Apps anpassen',
+        icon: 'widget', // See the list of available icons below
         form: {
           groups: [
             {
-              'label': 'About You', // optional
+              'label': 'Apps', // optional
               'fields': [
                 {
-                  label: 'Name',
-                  key: 'name',
-                  type: 'text',
-                  help: 'What is your name?'
+                  label: 'Liste der Apps',
+                  key: 'app-list',
+                type: 'checkbox',
+                options: [
+                  { label: 'schul.cloud', value: 'SchulCloud' },
+                  { label: 'BBZ Portal', value: 'BBZPortal' },
+                  { label: 'Microsoft Office', value: 'MSOffice' },
+                  { label: 'CryptPad', value: 'CryptPad' },
+                  { label: 'Excalidraw Whiteboard', value: 'Excalidraw' },
+                ],
+                help: 'Wählen Sie die Apps aus, die angezeigt werden sollen!',
                 },
                 // ...
               ]
@@ -123,6 +130,8 @@ const createWindow = async () => {
         ? path.join(__dirname, 'preload.js')
         : path.join(__dirname, '../../.erb/dll/preload.js'),
       webviewTag: true,
+      nodeIntegration: false, // is default value after Electron v5
+      contextIsolation: true, // protect against prototype pollution
     },
   });
 

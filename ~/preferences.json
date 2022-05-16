@@ -1,5 +1,12 @@
 {
     "about": {
         "name": "Peter"
+    },
+    "app-webviews": {
+        "app-list": [
+            "SchulCloud",
+            "BBZPortal",
+            "MSOffice"
+        ]
     }
 }
