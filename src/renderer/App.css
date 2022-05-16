@@ -178,6 +178,16 @@ h1 {
   margin-top: -4px;
 }
 
+.settings {
+  background: #fff;
+  padding: 4px;
+  border-radius: 4px;
+  width: 24px;
+  height: 24px;
+  margin-top: 16px;
+  margin-left: 4px;
+}
+
 @media(max-height:800px) {
   .wv {
     width: calc(100vw + 3px) !important;

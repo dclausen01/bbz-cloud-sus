@@ -7,10 +7,13 @@
 /* eslint global-require: off, no-console: off, promise/always-return: off */
 
 import path from 'path';
+import os from 'os';
 import { app, BrowserWindow, shell, Notification, ipcMain, Menu } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
 import { resolveHtmlPath } from './util';
+const ElectronPreferences = require('electron-preferences');
+
 
 var fs = require('fs');
 var https = require('https');
@@ -63,6 +66,53 @@ const createWindow = async () => {
     return path.join(RESOURCES_PATH, ...paths);
   };
 
+  const preferences = new ElectronPreferences({
+    // Override default preference BrowserWindow values
+    // browserWindowOpts: { /* ... */ },
+    
+    // Create an optional menu bar
+    // menu: Menu.buildFromTemplate(/* ... */),
+    
+    // Provide a custom CSS file, relative to your appPath.
+    // css: 'preference-styles.css'
+  
+    // Preference file path
+    dataStore: '~/preferences.json', // defaults to <userData>/preferences.json
+  
+    defaults: { 
+      about: {
+        name: 'Albert'
+      }
+     },
+  
+    // Preference sections visible to the UI
+    sections: [
+      {
+        id: 'about',
+        label: 'About You',
+        icon: 'single-01', // See the list of available icons below
+        form: {
+          groups: [
+            {
+              'label': 'About You', // optional
+              'fields': [
+                {
+                  label: 'Name',
+                  key: 'name',
+                  type: 'text',
+                  help: 'What is your name?'
+                },
+                // ...
+              ]
+            },
+            // ...
+          ]
+        }
+      },
+      // ...
+    ]
+  })
+  
   mainWindow = new BrowserWindow({
     show: false,
     width: 1280,

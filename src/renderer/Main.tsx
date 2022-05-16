@@ -13,6 +13,10 @@ function reloadPage() {
   window.location.reload();
 }
 
+function openPreferences() {
+  window.api.send("showPreferences");
+}
+
 export default class Main extends React.Component {
   componentDidMount() {
     $('#main').hide();
@@ -135,6 +139,7 @@ export default class Main extends React.Component {
                 </p>
               </div>
               <div id="apps" />
+              <input type="image" class="settings" src="https://www.pngall.com/wp-content/uploads/4/Gear.png" onClick={() => openPreferences()}></input>
               <div id="buttons" />
               <br />
             </div>
