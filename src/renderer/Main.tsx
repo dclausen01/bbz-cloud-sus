@@ -7,7 +7,10 @@
 import React from 'react';
 import $ from 'jquery';
 import monkey from '../../assets/monkey.png';
-import doge from '../../assets/uebersicht.png'; // TODO: Replace doge with something more suitable. Might be fine though, because everybody likes dogs.
+import doge from '../../assets/uebersicht.png'; 
+
+// https://github.com/snapcrunch/electron-preferences
+// https://stackoverflow.com/questions/48148021/how-to-import-ipcrenderer-in-react/59796326#59796326?newreg=2a6a7aee6ffc48ad8840a25d205717d9
 
 function reloadPage() {
   window.location.reload();
