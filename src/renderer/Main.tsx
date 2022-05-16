@@ -17,6 +17,9 @@ function openPreferences() {
   window.api.send("showPreferences");
 }
 
+// get Preferences in settings
+var settings = window.api.send("getPreferences");
+
 export default class Main extends React.Component {
   componentDidMount() {
     $('#main').hide();
@@ -114,6 +117,11 @@ export default class Main extends React.Component {
         );
       }
     });
+
+    window.api.receive("preferencesUpdated", (e, preferences) => {
+      settings = preferences;
+    });
+
   }
 
   render() {
