@@ -7,26 +7,38 @@
 import React from 'react';
 import $ from 'jquery';
 import monkey from '../../assets/monkey.png';
-import doge from '../../assets/uebersicht.png';
+import u1 from '../../assets/uebersicht.png';
+import u2 from '../../assets/doge.png';
+import Settings from './Settings';
 
-// get Preferences in settings
-var settings = window.api.send('getPreferences');
-
-// https://github.com/snapcrunch/electron-preferences
-// https://stackoverflow.com/questions/48148021/how-to-import-ipcrenderer-in-react/59796326#59796326?newreg=2a6a7aee6ffc48ad8840a25d205717d9
+var doge;
+const isTeacher = true;
+if (isTeacher) {
+  doge = u1;
+} else {
+  doge = u2;
+}
 
 function reloadPage() {
   window.location.reload();
 }
 
-function openPreferences() {
-  window.api.send('showPreferences');
-}
-
 export default class Main extends React.Component {
   componentDidMount() {
+    localStorage.setItem('isClickable', 'true');
     $('#main').hide();
     $('#error').hide();
+    $('#settings').hide();
+    $('#settingsb').click(function () {
+      $('#settings').show();
+      $('#content').hide();
+      localStorage.setItem('isClickable', 'false');
+    });
+    $('#sbb').click(function () {
+      $('#settings').hide();
+      $('#content').show();
+      localStorage.setItem('isClickable', 'true');
+    });
     $('body').css('background', '#173a64');
     // let isOnline = true;
     // eslint-disable-next-line promise/catch-or-return
@@ -61,7 +73,6 @@ export default class Main extends React.Component {
       $('#loading').hide();
       $('#main').show();
       $('body').css('background', `#fff`);
-      const isTeacher = true;
       $.getJSON(
         'https://privateorg-pink-platypus.github.io/bbz-cloud/object.json',
         function (links) {
@@ -120,10 +131,6 @@ export default class Main extends React.Component {
         );
       }
     });
-
-    window.api.receive('preferencesUpdated', (e, preferences) => {
-      settings = preferences;
-    });
   }
 
   render() {
@@ -149,12 +156,11 @@ export default class Main extends React.Component {
                 </p>
               </div>
               <div id="apps" />
-              <input
-                type="image"
-                className="settings debug"
+              <img
+                id="settingsb"
                 src="https://www.pngall.com/wp-content/uploads/4/Gear.png"
-                onClick={() => openPreferences()}
                 alt="Einstellungen"
+                className="debug"
               />
               <div id="buttons" />
               <br />
@@ -170,6 +176,9 @@ export default class Main extends React.Component {
                 alt="Übersicht"
               />
             </div>
+          </div>
+          <div id="settings">
+            <Settings />
           </div>
         </div>
         <div id="loading">

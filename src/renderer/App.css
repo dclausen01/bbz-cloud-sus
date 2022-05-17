@@ -178,7 +178,7 @@ h1 {
   margin-top: -4px;
 }
 
-.settings {
+#settingsb {
   background: #fff;
   padding: 4px;
   border-radius: 4px;
@@ -186,6 +186,7 @@ h1 {
   height: 24px;
   margin-top: 16px;
   margin-left: 4px;
+  cursor: pointer;
 }
 
 @media(max-height:800px) {

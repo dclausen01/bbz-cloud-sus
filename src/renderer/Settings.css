@@ -1,0 +1,12 @@
+#sbb {
+  cursor: pointer !important;
+  vertical-align: middle;
+  font-size: 22pt !important;
+  font-weight: bold;
+  margin-left: 10px;
+}
+
+#settingsv {
+  text-align: left !important;
+  padding: 20px;
+}

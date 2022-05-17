@@ -8,18 +8,25 @@
 
 import path from 'path';
 import os from 'os';
-import { app, BrowserWindow, shell, Notification, ipcMain, Menu, systemPreferences } from 'electron';
+import {
+  app,
+  BrowserWindow,
+  shell,
+  Notification,
+  ipcMain,
+  Menu,
+  systemPreferences,
+} from 'electron';
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
 import { resolveHtmlPath } from './util';
-const ElectronPreferences = require('electron-preferences');
 
 var fs = require('fs');
 var https = require('https');
 
 const RESOURCES_PATH = app.isPackaged
-    ? path.join(process.resourcesPath, 'assets')
-    : path.join(__dirname, '../../assets');
+  ? path.join(process.resourcesPath, 'assets')
+  : path.join(__dirname, '../../assets');
 
 const getAssetPath = (...paths: string[]): string => {
   return path.join(RESOURCES_PATH, ...paths);
@@ -59,82 +66,6 @@ const installExtensions = async () => {
     )
     .catch(console.log);
 };
-
-const preferences = new ElectronPreferences({
-  // Override default preference BrowserWindow values
-  // browserWindowOpts: { /* ... */ },
-
-  // Create an optional menu bar
-  // menu: Menu.buildFromTemplate(/* ... */),
-
-  // Provide a custom CSS file, relative to your appPath.
-  // css: 'preference-styles.css'
-
-  // Preference file path
-  dataStore: getAssetPath('preferences.json'), // defaults to <userData>/preferences.json
-
-  /* defaults: {
-    about: {
-      name: 'Albert'
-    }
-   }, */
-
-  // Preference sections visible to the UI
-  sections: [
-    {
-      id: 'app-webviews',
-      label: 'Apps anpassen',
-      icon: 'widget', // See the list of available icons below
-      form: {
-        groups: [
-          {
-            'label': 'Apps', // optional
-            'fields': [
-              {
-                label: 'Liste der Apps',
-                key: 'app-list',
-                type: 'checkbox',
-                options: [
-                  { label: 'schul.cloud', value: 'SchulCloud' },
-                  { label: 'BBZ Portal', value: 'BBZPortal' },
-                  { label: 'Microsoft Office', value: 'MSOffice' },
-                  { label: 'CryptPad', value: 'CryptPad' },
-                  { label: 'Excalidraw Whiteboard', value: 'Excalidraw' },
-                ],
-                help: 'Wählen Sie die Apps aus, die angezeigt werden sollen!',
-              },
-              // ...
-            ]
-          },
-          // ...
-        ]
-      }
-    },
-    {
-      id: 'system-settings',
-      label: 'Systemeinstellungen',
-      icon: 'spaceship', // See the list of available icons below
-      form: {
-        groups: [
-          {
-            'label': 'Systemeinstellungen', // optional
-            'fields': [
-              {
-                label: 'Autostart',
-                key: 'autostart-settings',
-                type: 'checkbox',
-                options: [
-                  { label: 'Die BBZ Cloud App beim Login am Computer starten', value: 'autostart'}
-                ],
-              }
-            ]
-          },
-        ]
-      },
-    },
-    // ...
-  ]
-});
 
 const createWindow = async () => {
   if (isDevelopment) {
@@ -191,23 +122,6 @@ const createWindow = async () => {
 /**
  * Add event listeners...
  */
-
-/* Snippet für "getting keys"
-var jsonObj = {"person":"me","age":"30"};
-Object.keys(jsonObj);  // returns ["person", "age"]
-*/
-
- preferences.on('save', (preferences) => { // TODO: Fix me
-  // console.log(`Preferences were saved: `, JSON.stringify((preferences['system-settings']['autostart-settings'].includes('autostart')), null, 4));
-  if (preferences['system-settings']['autostart-settings'].includes('autostart')) {
-    var openAtLogin_value = true;
-  } else {
-    var openAtLogin_value = false;
-  }
-  app.setLoginItemSettings({
-    openAtLogin: openAtLogin_value,
-  });
-});
 
 app.on('window-all-closed', () => {
   // Respect the OSX convention of having the application in memory even
@@ -341,14 +255,8 @@ app
       // dock icon is clicked and there are no other windows open.
       if (mainWindow === null) createWindow();
     });
-    if (preferences['system-settings']['autostart-settings'].includes('autostart')) {
-      var openAtLogin_value = true;
-    } else {
-      var openAtLogin_value = false;
-    }
     app.setLoginItemSettings({
       openAtLogin: openAtLogin_value,
     });
   })
   .catch(console.log);
-

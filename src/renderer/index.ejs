@@ -13,28 +13,36 @@
     <div id="root"></div>
     <script>
       function changeUrl(u) {
-        $(".wv").hide();
-        $(".wvbr").hide();
-        $(".wvbb").hide();
-        $(".wvbf").hide();
-        $(".web-"+u).show();
-        $(".webbr-"+u).show();
-        $(".webbb-"+u).show();
-        $(".webbf-"+u).show();
-        $("#doge").hide();
-        $("#doge").html('');
+        if (localStorage.getItem('isClickable') === 'true') {
+          $(".wv").hide();
+          $(".wvbr").hide();
+          $(".wvbb").hide();
+          $(".wvbf").hide();
+          $(".web-"+u).show();
+          $(".webbr-"+u).show();
+          $(".webbb-"+u).show();
+          $(".webbf-"+u).show();
+          $("#doge").hide();
+          $("#doge").html('');
+        }
       }
       function reloadView(v) {
-        wv = document.getElementById("wv-"+v);
-        wv.reload();
+        if (localStorage.getItem('isClickable') === 'true') {
+          wv = document.getElementById("wv-"+v);
+          wv.reload();
+        }
       }
       function back(v) {
-        wv = document.getElementById("wv-"+v);
-        wv.goBack();
+        if (localStorage.getItem('isClickable') === 'true') {
+          wv = document.getElementById("wv-"+v);
+          wv.goBack();
+        }
       }
       function forward(v) {
-        wv = document.getElementById("wv-"+v);
-        wv.goForward();
+        if (localStorage.getItem('isClickable') === 'true') {
+          wv = document.getElementById("wv-"+v);
+          wv.goForward();
+        }
       }
     </script>
   </body>
