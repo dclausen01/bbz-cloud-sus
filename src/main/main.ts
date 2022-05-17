@@ -69,22 +69,22 @@ const createWindow = async () => {
   const preferences = new ElectronPreferences({
     // Override default preference BrowserWindow values
     // browserWindowOpts: { /* ... */ },
-    
+
     // Create an optional menu bar
     // menu: Menu.buildFromTemplate(/* ... */),
-    
+
     // Provide a custom CSS file, relative to your appPath.
     // css: 'preference-styles.css'
-  
+
     // Preference file path
     dataStore: '~/preferences.json', // defaults to <userData>/preferences.json
-  
-    defaults: { 
+
+    defaults: {
       about: {
         name: 'Albert'
       }
      },
-  
+
     // Preference sections visible to the UI
     sections: [
       {
@@ -119,7 +119,7 @@ const createWindow = async () => {
       // ...
     ]
   })
-  
+
   mainWindow = new BrowserWindow({
     show: false,
     width: 1280,
@@ -229,9 +229,6 @@ app.on('web-contents-created', (event, contents) => {
   // eslint-disable-next-line no-var
   var handleNewWindow = (e, url) => {
     if (isWinzigWeich(url) || url.includes('download.aspx')) {
-      mainWindow?.webContents.executeJavaScript(
-        `localStorage.setItem("url", "${url}");`
-      );
       if (
         url.includes('about:blank') ||
         url.includes('download') ||
