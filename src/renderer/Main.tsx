@@ -7,11 +7,21 @@
 import React from 'react';
 import $ from 'jquery';
 import monkey from '../../assets/monkey.png';
-import doge from '../../assets/uebersicht.png'; // TODO: Replace doge with something more suitable. Might be fine though, because everybody likes dogs.
+import doge from '../../assets/uebersicht.png'; 
+
+// https://github.com/snapcrunch/electron-preferences
+// https://stackoverflow.com/questions/48148021/how-to-import-ipcrenderer-in-react/59796326#59796326?newreg=2a6a7aee6ffc48ad8840a25d205717d9
 
 function reloadPage() {
   window.location.reload();
 }
+
+function openPreferences() {
+  window.api.send("showPreferences");
+}
+
+// get Preferences in settings
+var settings = window.api.send("getPreferences");
 
 export default class Main extends React.Component {
   componentDidMount() {
@@ -110,6 +120,11 @@ export default class Main extends React.Component {
         );
       }
     });
+
+    window.api.receive("preferencesUpdated", (e, preferences) => {
+      settings = preferences;
+    });
+
   }
 
   render() {
@@ -135,6 +150,7 @@ export default class Main extends React.Component {
                 </p>
               </div>
               <div id="apps" />
+              <input type="image" class="settings" src="https://www.pngall.com/wp-content/uploads/4/Gear.png" onClick={() => openPreferences()}></input>
               <div id="buttons" />
               <br />
             </div>

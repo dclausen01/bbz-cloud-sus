@@ -7,10 +7,13 @@
 /* eslint global-require: off, no-console: off, promise/always-return: off */
 
 import path from 'path';
+import os from 'os';
 import { app, BrowserWindow, shell, Notification, ipcMain, Menu } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
 import { resolveHtmlPath } from './util';
+const ElectronPreferences = require('electron-preferences');
+
 
 var fs = require('fs');
 var https = require('https');
@@ -63,6 +66,60 @@ const createWindow = async () => {
     return path.join(RESOURCES_PATH, ...paths);
   };
 
+  const preferences = new ElectronPreferences({
+    // Override default preference BrowserWindow values
+    // browserWindowOpts: { /* ... */ },
+    
+    // Create an optional menu bar
+    // menu: Menu.buildFromTemplate(/* ... */),
+    
+    // Provide a custom CSS file, relative to your appPath.
+    // css: 'preference-styles.css'
+  
+    // Preference file path
+    dataStore: '~/preferences.json', // defaults to <userData>/preferences.json
+  
+    defaults: { 
+      about: {
+        name: 'Albert'
+      }
+     },
+  
+    // Preference sections visible to the UI
+    sections: [
+      {
+        id: 'app-webviews',
+        label: 'Apps anpassen',
+        icon: 'widget', // See the list of available icons below
+        form: {
+          groups: [
+            {
+              'label': 'Apps', // optional
+              'fields': [
+                {
+                  label: 'Liste der Apps',
+                  key: 'app-list',
+                type: 'checkbox',
+                options: [
+                  { label: 'schul.cloud', value: 'SchulCloud' },
+                  { label: 'BBZ Portal', value: 'BBZPortal' },
+                  { label: 'Microsoft Office', value: 'MSOffice' },
+                  { label: 'CryptPad', value: 'CryptPad' },
+                  { label: 'Excalidraw Whiteboard', value: 'Excalidraw' },
+                ],
+                help: 'Wählen Sie die Apps aus, die angezeigt werden sollen!',
+                },
+                // ...
+              ]
+            },
+            // ...
+          ]
+        }
+      },
+      // ...
+    ]
+  })
+  
   mainWindow = new BrowserWindow({
     show: false,
     width: 1280,
@@ -73,6 +130,8 @@ const createWindow = async () => {
         ? path.join(__dirname, 'preload.js')
         : path.join(__dirname, '../../.erb/dll/preload.js'),
       webviewTag: true,
+      nodeIntegration: false, // is default value after Electron v5
+      contextIsolation: true, // protect against prototype pollution
     },
   });
 
