@@ -52,7 +52,10 @@
       "target": [
         "snap"
       ],
-      "category": "Office"
+      "category": "Office",
+      "desktop": {
+        "StartupWMClass": "bbzcloud"
+      }
     },
     "directories": {
       "app": "release/app",
