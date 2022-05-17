@@ -151,7 +151,7 @@ export default class Main extends React.Component {
               <div id="apps" />
               <input
                 type="image"
-                className="settings"
+                className="settings debug"
                 src="https://www.pngall.com/wp-content/uploads/4/Gear.png"
                 onClick={() => openPreferences()}
                 alt="Einstellungen"

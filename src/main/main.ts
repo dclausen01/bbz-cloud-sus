@@ -145,6 +145,10 @@ const createWindow = async () => {
 
   Menu.setApplicationMenu(null);
 
+  if (!isDevelopment) {
+    mainWindow.webContents.insertCSS('.debug{display:none !important;}');
+  }
+
   mainWindow.on('ready-to-show', () => {
     if (!mainWindow) {
       throw new Error('"mainWindow" is not defined');
