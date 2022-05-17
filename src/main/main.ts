@@ -8,12 +8,18 @@
 
 import path from 'path';
 import os from 'os';
-import { app, BrowserWindow, shell, Notification, ipcMain, Menu } from 'electron';
+import {
+  app,
+  BrowserWindow,
+  shell,
+  Notification,
+  ipcMain,
+  Menu,
+} from 'electron';
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
 import { resolveHtmlPath } from './util';
 const ElectronPreferences = require('electron-preferences');
-
 
 var fs = require('fs');
 var https = require('https');
@@ -81,9 +87,9 @@ const createWindow = async () => {
 
     defaults: {
       about: {
-        name: 'Albert'
-      }
-     },
+        name: 'Albert',
+      },
+    },
 
     // Preference sections visible to the UI
     sections: [
@@ -94,31 +100,31 @@ const createWindow = async () => {
         form: {
           groups: [
             {
-              'label': 'Apps', // optional
-              'fields': [
+              label: 'Apps', // optional
+              fields: [
                 {
                   label: 'Liste der Apps',
                   key: 'app-list',
-                type: 'checkbox',
-                options: [
-                  { label: 'schul.cloud', value: 'SchulCloud' },
-                  { label: 'BBZ Portal', value: 'BBZPortal' },
-                  { label: 'Microsoft Office', value: 'MSOffice' },
-                  { label: 'CryptPad', value: 'CryptPad' },
-                  { label: 'Excalidraw Whiteboard', value: 'Excalidraw' },
-                ],
-                help: 'Wählen Sie die Apps aus, die angezeigt werden sollen!',
+                  type: 'checkbox',
+                  options: [
+                    { label: 'schul.cloud', value: 'SchulCloud' },
+                    { label: 'BBZ Portal', value: 'BBZPortal' },
+                    { label: 'Microsoft Office', value: 'MSOffice' },
+                    { label: 'CryptPad', value: 'CryptPad' },
+                    { label: 'Excalidraw Whiteboard', value: 'Excalidraw' },
+                  ],
+                  help: 'Wählen Sie die Apps aus, die angezeigt werden sollen!',
                 },
                 // ...
-              ]
+              ],
             },
             // ...
-          ]
-        }
+          ],
+        },
       },
       // ...
-    ]
-  })
+    ],
+  });
 
   mainWindow = new BrowserWindow({
     show: false,
