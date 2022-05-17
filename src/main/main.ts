@@ -8,7 +8,18 @@
 
 import path from 'path';
 import os from 'os';
+<<<<<<< HEAD
 import { app, BrowserWindow, shell, Notification, ipcMain, Menu, systemPreferences } from 'electron';
+=======
+import {
+  app,
+  BrowserWindow,
+  shell,
+  Notification,
+  ipcMain,
+  Menu,
+} from 'electron';
+>>>>>>> 36cd8f93a99718eb69ca510ef7bc7a137db9cb06
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
 import { resolveHtmlPath } from './util';
@@ -60,6 +71,7 @@ const installExtensions = async () => {
     .catch(console.log);
 };
 
+<<<<<<< HEAD
 const preferences = new ElectronPreferences({
   // Override default preference BrowserWindow values
   // browserWindowOpts: { /* ... */ },
@@ -141,6 +153,75 @@ const createWindow = async () => {
     await installExtensions();
   }
   
+=======
+const createWindow = async () => {
+  if (isDevelopment) {
+    await installExtensions();
+  }
+
+  const RESOURCES_PATH = app.isPackaged
+    ? path.join(process.resourcesPath, 'assets')
+    : path.join(__dirname, '../../assets');
+
+  const getAssetPath = (...paths: string[]): string => {
+    return path.join(RESOURCES_PATH, ...paths);
+  };
+
+  const preferences = new ElectronPreferences({
+    // Override default preference BrowserWindow values
+    // browserWindowOpts: { /* ... */ },
+
+    // Create an optional menu bar
+    // menu: Menu.buildFromTemplate(/* ... */),
+
+    // Provide a custom CSS file, relative to your appPath.
+    // css: 'preference-styles.css'
+
+    // Preference file path
+    dataStore: '~/preferences.json', // defaults to <userData>/preferences.json
+
+    defaults: {
+      about: {
+        name: 'Albert',
+      },
+    },
+
+    // Preference sections visible to the UI
+    sections: [
+      {
+        id: 'app-webviews',
+        label: 'Apps anpassen',
+        icon: 'widget', // See the list of available icons below
+        form: {
+          groups: [
+            {
+              label: 'Apps', // optional
+              fields: [
+                {
+                  label: 'Liste der Apps',
+                  key: 'app-list',
+                  type: 'checkbox',
+                  options: [
+                    { label: 'schul.cloud', value: 'SchulCloud' },
+                    { label: 'BBZ Portal', value: 'BBZPortal' },
+                    { label: 'Microsoft Office', value: 'MSOffice' },
+                    { label: 'CryptPad', value: 'CryptPad' },
+                    { label: 'Excalidraw Whiteboard', value: 'Excalidraw' },
+                  ],
+                  help: 'Wählen Sie die Apps aus, die angezeigt werden sollen!',
+                },
+                // ...
+              ],
+            },
+            // ...
+          ],
+        },
+      },
+      // ...
+    ],
+  });
+
+>>>>>>> 36cd8f93a99718eb69ca510ef7bc7a137db9cb06
   mainWindow = new BrowserWindow({
     show: false,
     width: 1280,
@@ -159,6 +240,10 @@ const createWindow = async () => {
   mainWindow.loadURL(resolveHtmlPath('index.html'));
 
   Menu.setApplicationMenu(null);
+
+  if (!isDevelopment) {
+    mainWindow.webContents.insertCSS('.debug{display:none !important;}');
+  }
 
   mainWindow.on('ready-to-show', () => {
     if (!mainWindow) {
@@ -267,9 +352,6 @@ app.on('web-contents-created', (event, contents) => {
   // eslint-disable-next-line no-var
   var handleNewWindow = (e, url) => {
     if (isWinzigWeich(url) || url.includes('download.aspx')) {
-      mainWindow?.webContents.executeJavaScript(
-        `localStorage.setItem("url", "${url}");`
-      );
       if (
         url.includes('about:blank') ||
         url.includes('download') ||
