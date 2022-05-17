@@ -11,6 +11,18 @@ import u1 from '../../assets/uebersicht.png';
 import u2 from '../../assets/doge.png';
 import Settings from './Settings';
 
+/* function getSettings(key) {
+  window.api.send("getSettings", key);
+  window.api.receive("fromMain", (value) => {
+    return value;
+  });
+}
+
+function setSettings(key, value) {
+  window.api.send("setSettings", key, value); 
+}
+*/
+
 var doge;
 const isTeacher = true;
 if (isTeacher) {
@@ -152,7 +164,7 @@ export default class Main extends React.Component {
                 <p>
                   In Rendsburg-Eckernförde sind es aktuell{' '}
                   <span id="temperature" />
-                  °C
+                  °C 
                 </p>
               </div>
               <div id="apps" />

@@ -20,6 +20,22 @@ import {
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
 import { resolveHtmlPath } from './util';
+import settings from './store';
+
+// https://stackoverflow.com/questions/48148021/how-to-import-ipcrenderer-in-react/59796326#59796326?newreg=2a6a7aee6ffc48ad8840a25d205717d9
+
+/* 
+settings.set('autostart', true);
+
+ipcMain.on("setSettings", (event, key, value) => {
+  settings.set(key, value);
+});
+
+ipcMain.on("getSettings", (event, key) => {
+  mainWindow.webContents.send("fromMain", settings.get(key));
+});
+
+*/
 
 var fs = require('fs');
 var https = require('https');
@@ -256,7 +272,7 @@ app
       if (mainWindow === null) createWindow();
     });
     app.setLoginItemSettings({
-      openAtLogin: openAtLogin_value,
+      openAtLogin: settings.get('autostart'),
     });
   })
   .catch(console.log);
