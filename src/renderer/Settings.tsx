@@ -17,7 +17,7 @@ export default class Main extends React.Component {
         <div id="sbb">&larr;</div>
         <p>Hello!</p>
         <input type="checkbox" id="autostart" name="autostart_onoff"></input>
-        <label for="autostart_onoff">App beim Login am Computer automatisch starten</label>
+        <label htmlFor="autostart_onoff">App beim Login am Computer automatisch starten</label>
         <button onClick={setAutostart}>Speichern</button>
     </div>
      // </div>
