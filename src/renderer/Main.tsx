@@ -11,18 +11,6 @@ import u1 from '../../assets/uebersicht.png';
 import u2 from '../../assets/doge.png';
 import Settings from './Settings';
 
-/* function getSettings(key) {
-  window.api.send("getSettings", key);
-  window.api.receive("fromMain", (value) => {
-    return value;
-  });
-}
-
-function setSettings(key, value) {
-  window.api.send("setSettings", key, value); 
-}
-*/
-
 var doge;
 const isTeacher = true;
 if (isTeacher) {
