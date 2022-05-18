@@ -10,3 +10,7 @@
   text-align: left !important;
   padding: 20px;
 }
+
+input {
+  margin: .4rem;
+}

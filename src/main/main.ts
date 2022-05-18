@@ -20,22 +20,15 @@ import {
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
 import { resolveHtmlPath } from './util';
-import settings from './store';
 
 // https://stackoverflow.com/questions/48148021/how-to-import-ipcrenderer-in-react/59796326#59796326?newreg=2a6a7aee6ffc48ad8840a25d205717d9
 
-/* 
-settings.set('autostart', true);
-
-ipcMain.on("setSettings", (event, key, value) => {
-  settings.set(key, value);
+ipcMain.on("autostart", (event, args) => {
+  console.log("Autostart getriggert: ", args);
+  app.setLoginItemSettings({
+    openAtLogin: args,
+  });
 });
-
-ipcMain.on("getSettings", (event, key) => {
-  mainWindow.webContents.send("fromMain", settings.get(key));
-});
-
-*/
 
 var fs = require('fs');
 var https = require('https');
@@ -270,9 +263,6 @@ app
       // On macOS it's common to re-create a window in the app when the
       // dock icon is clicked and there are no other windows open.
       if (mainWindow === null) createWindow();
-    });
-    app.setLoginItemSettings({
-      openAtLogin: settings.get('autostart'),
     });
   })
   .catch(console.log);
