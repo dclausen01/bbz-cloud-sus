@@ -1,3 +1,5 @@
+/* eslint-disable react/button-has-type */
+/* eslint-disable jsx-a11y/label-has-associated-control */
 /* eslint-disable no-restricted-syntax */
 /* eslint-disable @typescript-eslint/no-use-before-define */
 /* eslint-disable no-var */
@@ -25,6 +27,14 @@ function reloadPage() {
   window.location.reload();
 }
 
+function setAutostart() {
+  const autostart = document.querySelector('input');
+  autostart.addEventListener(
+    'click',
+    window.api.send('autostart', autostart?.checked)
+  );
+}
+
 export default class Main extends React.Component {
   componentDidMount() {
     localStorage.setItem('isClickable', 'true');
@@ -34,11 +44,15 @@ export default class Main extends React.Component {
     $('#settingsb').click(function () {
       $('#settings').show();
       $('#content').hide();
+      $('#buttons').hide();
+      $('body').css('overflow', 'visible');
       localStorage.setItem('isClickable', 'false');
     });
     $('#sbb').click(function () {
       $('#settings').hide();
       $('#content').show();
+      $('#buttons').show();
+      $('body').css('overflow', 'hidden');
       localStorage.setItem('isClickable', 'true');
     });
     $('body').css('background', '#173a64');
@@ -82,9 +96,21 @@ export default class Main extends React.Component {
           for (const [key, e] of Object.entries(links)) {
             if (e.enabled) {
               if (e.teacher === true && isTeacher === true) {
+                $('#appchecks').append(
+                  `<p><input type="checkbox" id="check-${key}" onClick="toggleApp('${key}')" /> ${key}</p>`
+                );
+                if (localStorage.getItem(`checked-${key}`) === null) {
+                  localStorage.setItem(`checked-${key}`, 'true');
+                }
+                if (localStorage.getItem(`checked-${key}`) === 'true') {
+                  $(`#check-${key}`).attr('checked', '');
+                }
                 $('#apps').append(
                   `<a onClick="changeUrl('${key}')" target="_blank" class="link-${key} app" style="cursor:pointer;"><img src="${e.icon}" height="24" title=${key}></a>`
                 );
+                if (localStorage.getItem(`checked-${key}`) === 'false') {
+                  $(`.link-${key}`).hide();
+                }
                 $('#views').append(
                   `<webview
                   id="wv-${key}"
@@ -95,9 +121,21 @@ export default class Main extends React.Component {
                 );
               }
               if (e.teacher === false) {
+                $('#appchecks').append(
+                  `<p><input type="checkbox" id="check-${key}" onClick="toggleApp('${key}')" /> ${key}</p>`
+                );
+                if (localStorage.getItem(`checked-${key}`) === null) {
+                  localStorage.setItem(`checked-${key}`, 'true');
+                }
+                if (localStorage.getItem(`checked-${key}`) === 'true') {
+                  $(`#check-${key}`).attr('checked', '');
+                }
                 $('#apps').append(
                   `<a onClick="changeUrl('${key}')" target="_blank" class="link-${key} app" style="cursor:pointer;"><img src="${e.icon}" height="24" title=${key}></a>`
                 );
+                if (localStorage.getItem(`checked-${key}`) === 'false') {
+                  $(`.link-${key}`).hide();
+                }
                 $('#views').append(
                   `<webview
                   id="wv-${key}"
@@ -154,7 +192,7 @@ export default class Main extends React.Component {
                 <p>
                   In Rendsburg-Eckernförde sind es aktuell{' '}
                   <span id="temperature" />
-                  °C 
+                  °C
                 </p>
               </div>
               <div id="apps" />
@@ -180,7 +218,23 @@ export default class Main extends React.Component {
             </div>
           </div>
           <div id="settings">
-            <Settings />
+            <div id="settingsv">
+              <h1>Einstellungen</h1>
+              <p className="error">
+                <i className="fa fa-lightbulb-o" aria-hidden="true" /> Nicht
+                vergessen zu speichern!
+              </p>
+              <h2>Autostart</h2>
+              <input type="checkbox" id="autostart" name="autostart_onoff" />
+              <label htmlFor="autostart_onoff">
+                App beim Login am Computer automatisch starten
+              </label>
+              <h2>Apps aktivieren/deaktivieren</h2>
+              <div id="appchecks" />
+              <button onClick={setAutostart} id="sbb">
+                Speichern
+              </button>
+            </div>
           </div>
         </div>
         <div id="loading">

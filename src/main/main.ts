@@ -27,6 +27,7 @@ ipcMain.on("autostart", (event, args) => {
   console.log("Autostart getriggert: ", args);
   app.setLoginItemSettings({
     openAtLogin: args,
+    openAsHidden: true,
   });
 });
 
@@ -108,7 +109,11 @@ const createWindow = async () => {
     if (!mainWindow) {
       throw new Error('"mainWindow" is not defined');
     }
-    if (process.env.START_MINIMIZED) {
+    if (
+      process.env.START_MINIMIZED ||
+      app.getLoginItemSettings().wasOpenedAsHidden
+    ) {
+      mainWindow.show();
       mainWindow.minimize();
     } else {
       mainWindow.show();
