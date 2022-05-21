@@ -154,10 +154,14 @@ export default class Main extends React.Component {
               $('#buttons').append(
                 `<span onClick="forward('${key}')" class="wvbf webbf-${key}" style="cursor:pointer;vertical-align:middle;font-size:22pt;font-weight:bold;margin-left:10px;">&rarr;</span>`
               );
+              $('#buttons').append(
+                `<span onClick="copyUrl('${key}')" class="wvbc webbc-${key}" style="cursor:pointer;vertical-align:middle;font-size:22pt;font-weight:bold;margin-left:10px;"><i class="fa fa-files-o" aria-hidden="true"></i></span>`
+              );
               $('.wv').hide();
               $('.wvbr').hide();
               $('.wvbb').hide();
               $('.wvbf').hide();
+              $('.wvbc').hide();
             }
           }
         }

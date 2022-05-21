@@ -19,10 +19,12 @@
           $(".wvbr").hide();
           $(".wvbb").hide();
           $(".wvbf").hide();
+          $('.wvbc').hide();
           $(".web-"+u).show();
           $(".webbr-"+u).show();
           $(".webbb-"+u).show();
           $(".webbf-"+u).show();
+          $(".webbc-"+u).show();
           $("#doge").hide();
           $("#doge").html('');
         }
@@ -55,6 +57,10 @@
           $("#check-"+k).attr('checked', '');
           $(".link-"+k).show();
         }
+      }
+      function copyUrl(v) {
+        wv = document.getElementById("wv-"+v);
+        navigator.clipboard.writeText(wv.getURL());
       }
     </script>
   </body>
