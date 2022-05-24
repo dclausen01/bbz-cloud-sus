@@ -11,7 +11,6 @@ import $ from 'jquery';
 import monkey from '../../assets/monkey.png';
 import u1 from '../../assets/uebersicht.png';
 import u2 from '../../assets/doge.png';
-import Settings from './Settings';
 
 // TODO: Single-Sign On via injections (Bsp.: $("#userNameInput" ).attr( "value", "dennis.clausen@bbz-rd-eck.de" ); für Outlook)
 
