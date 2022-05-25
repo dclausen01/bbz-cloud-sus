@@ -21,7 +21,7 @@ namespace bbzupdate
       label1.Text = Properties.strings.checking;
       try
       {
-        new HttpClient().GetStringAsync("TODO").Wait();
+        new HttpClient().GetStringAsync("http://85.215.216.178:8081/updater/").Wait();
       }
       catch
       {
@@ -39,7 +39,8 @@ namespace bbzupdate
       try
       {
         label1.Text = Properties.strings.download;
-        latest = Convert.ToInt32(new HttpClient().GetStringAsync("TODO").Result);
+        string channel = File.ReadAllLines("channel")[0];
+        latest = Convert.ToInt32(new HttpClient().GetStringAsync("http://85.215.216.178:8081/updater/" + channel + "/latest").Result);
         if (File.Exists("version"))
         {
           version = Convert.ToInt32(File.ReadAllLines("version")[0]);
@@ -68,8 +69,9 @@ namespace bbzupdate
             Process.Start("Application.exe");
             this.Close();
           };
-          webClient.DownloadFileAsync(new Uri("TODO"), "release.zip");
-        } else
+          webClient.DownloadFileAsync(new Uri("http://85.215.216.178:8081/updater/" + channel + "/release.zip"), "release.zip");
+        }
+        else
         {
           Process.Start("Application.exe");
           this.Close();
