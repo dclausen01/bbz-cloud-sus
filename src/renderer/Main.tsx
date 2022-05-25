@@ -203,7 +203,7 @@ export default class Main extends React.Component {
                 id="settingsb"
                 src="https://www.pngall.com/wp-content/uploads/4/Gear.png"
                 alt="Einstellungen"
-                className="debug"
+                // className="debug"
               />
               <div id="buttons" />
               <br />
@@ -230,10 +230,10 @@ export default class Main extends React.Component {
               <h2>Autostart</h2>
               <input type="checkbox" id="autostart" name="autostart_onoff" />
               <label htmlFor="autostart_onoff">
-                App beim Login am Computer automatisch starten
+                App beim Login am Computer automatisch starten (Windows/Mac)
               </label>
               <h2>Apps aktivieren/deaktivieren</h2>
-              <div id="appchecks" />
+              <div id="appchecks" className="twoColumn"/>
               <button onClick={setAutostart} id="sbb">
                 Speichern
               </button>
