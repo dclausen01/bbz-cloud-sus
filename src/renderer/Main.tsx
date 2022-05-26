@@ -39,13 +39,14 @@ function saveSettings() {
     localStorage.setItem('autostart', 'false');
   };
   const custom1_url = document.getElementById('custom1_url').value;
-  const custom1_icon = document.getElementById('custom1_icon').value; 
+  const custom1_icon = document.getElementById('custom1_icon').value;
   localStorage.setItem('custom1_url', custom1_url);
   localStorage.setItem('custom1_icon', custom1_icon);
   const custom2_url = document.getElementById('custom2_url').value;
-  const custom2_icon = document.getElementById('custom2_icon').value; 
+  const custom2_icon = document.getElementById('custom2_icon').value;
   localStorage.setItem('custom2_url', custom2_url);
   localStorage.setItem('custom2_icon', custom2_icon);
+  window.location.reload();
 }
 
 export default class Main extends React.Component {
@@ -60,13 +61,6 @@ export default class Main extends React.Component {
       $('#buttons').hide();
       $('body').css('overflow', 'visible');
       localStorage.setItem('isClickable', 'false');
-    });
-    $('#sbb').click(function () {
-      $('#settings').hide();
-      $('#content').show();
-      $('#buttons').show();
-      $('body').css('overflow', 'hidden');
-      localStorage.setItem('isClickable', 'true');
     });
     $('body').css('background', '#173a64');
     // let isOnline = true;
@@ -169,7 +163,7 @@ export default class Main extends React.Component {
               );
               $('#buttons').append(
                 `<span onClick="copyUrl('${key}')" class="wvbc webbc-${key}" style="cursor:pointer;vertical-align:middle;font-size:20pt;font-weight:bold;margin-left:10px;"><i class="fa fa-files-o" aria-hidden="true"></i></span>`
-              );    
+              );
             }
           }
           if (localStorage.getItem(`custom1_url`) != '' && localStorage.getItem(`custom1_url`) != null) {
@@ -287,9 +281,6 @@ export default class Main extends React.Component {
               <h2>Apps aktivieren/deaktivieren</h2>
               <div id="appchecks" className="twoColumn" />
               <h2>Benutzerdefinierte Webapp hinzufügen</h2>
-              <p className="error">
-                <i className="fa fa-lightbulb-o" aria-hidden="true" /> Die App muss neu gestartet werden, um neu hinzugefügte Webapps sichtbar zu machen!
-              </p>
               <h3>Erste benutzerdefinierte App</h3>
               <input type="text" id="custom1_url" size="80" name="url_website" placeholder="https://example.com" />
               <label htmlFor="url_website">
