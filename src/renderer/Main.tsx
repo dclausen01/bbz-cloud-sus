@@ -248,7 +248,7 @@ export default class Main extends React.Component {
                 id="settingsb"
                 src="https://www.pngall.com/wp-content/uploads/4/Gear.png"
                 alt="Einstellungen"
-                className="debug"
+                // className="debug"
                 height="20"
               />
               <div id="buttons" />
