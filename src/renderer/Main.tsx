@@ -172,7 +172,7 @@ export default class Main extends React.Component {
               );    
             }
           }
-          if (localStorage.getItem(`custom1_url`) != '') {
+          if (localStorage.getItem(`custom1_url`) != '' && localStorage.getItem(`custom1_url`) != null) {
             const custom1_url = localStorage.getItem(`custom1_url`);
             const custom1_icon = localStorage.getItem(`custom1_icon`);
             $('#custom1_url').attr('value', custom1_url);
@@ -189,7 +189,7 @@ export default class Main extends React.Component {
               allowpopups></webview>`
             );
           };
-          if (localStorage.getItem(`custom2_url`) != '') {
+          if (localStorage.getItem(`custom2_url`) != '' && localStorage.getItem(`custom2_url`) != null) {
             const custom2_url = localStorage.getItem(`custom2_url`);
             const custom2_icon = localStorage.getItem(`custom2_icon`);
             $('#custom2_url').attr('value', custom2_url);
