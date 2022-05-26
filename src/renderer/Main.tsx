@@ -27,7 +27,7 @@ function reloadPage() {
   window.location.reload();
 }
 
-function setAutostart() {
+function saveSettings() {
   const autostart = document.querySelector('input');
   autostart.addEventListener(
     'click',
@@ -37,7 +37,15 @@ function setAutostart() {
     localStorage.setItem('autostart', 'true');
   } else {
     localStorage.setItem('autostart', 'false');
-  }
+  };
+  const custom1_url = document.getElementById('custom1_url').value;
+  const custom1_icon = document.getElementById('custom1_icon').value; 
+  localStorage.setItem('custom1_url', custom1_url);
+  localStorage.setItem('custom1_icon', custom1_icon);
+  const custom2_url = document.getElementById('custom2_url').value;
+  const custom2_icon = document.getElementById('custom2_icon').value; 
+  localStorage.setItem('custom2_url', custom2_url);
+  localStorage.setItem('custom2_icon', custom2_icon);
 }
 
 export default class Main extends React.Component {
@@ -161,14 +169,48 @@ export default class Main extends React.Component {
               );
               $('#buttons').append(
                 `<span onClick="copyUrl('${key}')" class="wvbc webbc-${key}" style="cursor:pointer;vertical-align:middle;font-size:20pt;font-weight:bold;margin-left:10px;"><i class="fa fa-files-o" aria-hidden="true"></i></span>`
-              );
-              $('.wv').hide();
-              $('.wvbr').hide();
-              $('.wvbb').hide();
-              $('.wvbf').hide();
-              $('.wvbc').hide();
+              );    
             }
           }
+          if (localStorage.getItem(`custom1_url`) != '') {
+            const custom1_url = localStorage.getItem(`custom1_url`);
+            const custom1_icon = localStorage.getItem(`custom1_icon`);
+            $('#custom1_url').attr('value', custom1_url);
+            $('#custom1_icon').attr('value', custom1_icon);
+            $('#apps').append(
+              `<a onClick="changeUrl('custom1')" target="_blank" class="link-custom1 app" style="cursor:pointer;"><img src="${custom1_icon}" height="20" title="Benutzerapp1"></a>`
+            );
+            $('#views').append(
+              `<webview
+              id="wv-custom1"
+              class="wv web-custom1"
+              src="${custom1_url}"
+              style="display:inline-flex; width:100%; height:91.5vh;"
+              allowpopups></webview>`
+            );
+          };
+          if (localStorage.getItem(`custom2_url`) != '') {
+            const custom2_url = localStorage.getItem(`custom2_url`);
+            const custom2_icon = localStorage.getItem(`custom2_icon`);
+            $('#custom2_url').attr('value', custom2_url);
+            $('#custom2_icon').attr('value', custom2_icon);
+            $('#apps').append(
+              `<a onClick="changeUrl('custom2')" target="_blank" class="link-custom2 app" style="cursor:pointer;"><img src="${custom2_icon}" height="20" title="Benutzerapp2"></a>`
+            );
+            $('#views').append(
+              `<webview
+              id="wv-custom2"
+              class="wv web-custom2"
+              src="${custom2_url}"
+              style="display:inline-flex; width:100%; height:91.5vh;"
+              allowpopups></webview>`
+            );
+          };
+          $('.wv').hide();
+          $('.wvbr').hide();
+          $('.wvbb').hide();
+          $('.wvbf').hide();
+          $('.wvbc').hide();
           if (localStorage.getItem('autostart') === 'true') {
             $('#autostart').attr('checked', 'true');
           }
@@ -244,7 +286,29 @@ export default class Main extends React.Component {
               </label>
               <h2>Apps aktivieren/deaktivieren</h2>
               <div id="appchecks" className="twoColumn" />
-              <button onClick={setAutostart} id="sbb">
+              <h2>Benutzerdefinierte Webapp hinzufügen</h2>
+              <p className="error">
+                <i className="fa fa-lightbulb-o" aria-hidden="true" /> Die App muss neu gestartet werden, um neu hinzugefügte Webapps sichtbar zu machen!
+              </p>
+              <h3>Erste benutzerdefinierte App</h3>
+              <input type="text" id="custom1_url" size="80" name="url_website" placeholder="https://example.com" />
+              <label htmlFor="url_website">
+                URL der Website
+              </label><p></p>
+              <input type="text" id="custom1_icon" size="80" name="icon_website" placeholder="https://example.com/icon.png" />
+              <label htmlFor="icon_website">
+                Icon der Website
+              </label>
+              <h3>Zweite benutzerdefinierte App</h3>
+              <input type="text" id="custom2_url" size="80" name="url_website" placeholder="https://example.com" />
+              <label htmlFor="url_website">
+                URL der Website
+              </label><p></p>
+              <input type="text" id="custom2_icon" size="80" name="icon_website" placeholder="https://example.com/icon.png" />
+              <label htmlFor="icon_website">
+                Icon der Website
+              </label>
+              <button onClick={saveSettings} id="sbb">
                 Speichern
               </button>
             </div>
