@@ -256,7 +256,7 @@ export default class Main extends React.Component {
                   <img
                     src="https://www.bbz-rd-eck.de/wp-content/uploads/2018/09/BBZ-Logo-Master.png"
                     alt="BBZ Logo"
-                    height="32"
+                    height="28"
                     id="logo"
                   />
                   <h1>BBZ Cloud</h1>
