@@ -278,7 +278,7 @@ export default class Main extends React.Component {
                   <h1>BBZ Cloud</h1>
                 </p>
                 <p>
-                  In Rendsburg-Eckernförde sind es aktuell{' '}
+                  Aktuell sind es{' '}
                   <span id="temperature" />
                   °C
                 </p>
