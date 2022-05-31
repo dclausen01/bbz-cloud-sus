@@ -1,3 +1,4 @@
+/* eslint-disable vars-on-top */
 /* eslint-disable react/button-has-type */
 /* eslint-disable jsx-a11y/label-has-associated-control */
 /* eslint-disable no-restricted-syntax */
@@ -11,7 +12,6 @@ import $ from 'jquery';
 import monkey from '../../assets/monkey.png';
 import u1 from '../../assets/uebersicht.png';
 import u2 from '../../assets/doge.png';
-import Settings from './Settings';
 
 // TODO: Single-Sign On via injections (Bsp.: $("#userNameInput" ).attr( "value", "dennis.clausen@bbz-rd-eck.de" ); für Outlook)
 
@@ -37,7 +37,7 @@ function saveSettings() {
     localStorage.setItem('autostart', 'true');
   } else {
     localStorage.setItem('autostart', 'false');
-  };
+  }
   const custom1_url = document.getElementById('custom1_url').value;
   const custom1_icon = document.getElementById('custom1_icon').value;
   localStorage.setItem('custom1_url', custom1_url);
@@ -58,8 +58,8 @@ export default class Main extends React.Component {
     $('#settingsb').click(function () {
       $('#settings').show();
       $('#content').hide();
-      $('#buttons').hide();
-      $('body').css('overflow', 'visible');
+      $('#buttons').css('visibility', 'hidden');
+      $('body').css('overflow', 'overlay');
       localStorage.setItem('isClickable', 'false');
     });
     $('body').css('background', '#173a64');
@@ -96,144 +96,159 @@ export default class Main extends React.Component {
       $('#loading').hide();
       $('#main').show();
       $('body').css('background', `#fff`);
+      if (localStorage.getItem('object') === null) {
+        localStorage.setItem('object', '');
+      }
       $.getJSON(
         'https://privateorg-pink-platypus.github.io/bbz-cloud/object.json',
         function (links) {
           // TODO: Add menu for smaller screens
-          for (const [key, e] of Object.entries(links)) {
-            if (e.enabled) {
-              if (e.teacher === true && isTeacher === true) {
-                $('#appchecks').append(
-                  `<p><input type="checkbox" id="check-${key}" onClick="toggleApp('${key}')" /> ${key}</p>`
-                );
-                if (localStorage.getItem(`checked-${key}`) === null) {
-                  localStorage.setItem(`checked-${key}`, 'true');
-                }
-                if (localStorage.getItem(`checked-${key}`) === 'true') {
-                  $(`#check-${key}`).attr('checked', '');
-                }
-                $('#apps').append(
-                  `<a onClick="changeUrl('${key}')" target="_blank" class="link-${key} app" style="cursor:pointer;"><img src="${e.icon}" height="20" title=${key}></a>`
-                );
-                if (localStorage.getItem(`checked-${key}`) === 'false') {
-                  $(`.link-${key}`).hide();
-                }
-                $('#views').append(
-                  `<webview
+          if (links !== localStorage.getItem('object')) {
+            localStorage.setItem('object', JSON.stringify(links));
+          }
+        }
+      );
+      var bobj = JSON.parse(localStorage.getItem('object'));
+      if (bobj !== '') {
+        for (const [key, e] of Object.entries(bobj)) {
+          if (e.enabled) {
+            if (e.teacher === true && isTeacher === true) {
+              $('#appchecks').append(
+                `<p><input type="checkbox" id="check-${key}" onClick="toggleApp('${key}')" /> ${key}</p>`
+              );
+              if (localStorage.getItem(`checked-${key}`) === null) {
+                localStorage.setItem(`checked-${key}`, 'true');
+              }
+              if (localStorage.getItem(`checked-${key}`) === 'true') {
+                $(`#check-${key}`).attr('checked', '');
+              }
+              $('#apps').append(
+                `<a onClick="changeUrl('${key}')" target="_blank" class="link-${key} app" style="cursor:pointer;"><img src="${e.icon}" height="20" title=${key}></a>`
+              );
+              if (localStorage.getItem(`checked-${key}`) === 'false') {
+                $(`.link-${key}`).hide();
+              }
+              $('#views').append(
+                `<webview
                   id="wv-${key}"
                   class="wv web-${key}"
                   src="${e.url}"
                   style="display:inline-flex; width:100%; height:91.5vh;"
                   allowpopups></webview>`
-                );
-              }
-              if (e.teacher === false) {
-                $('#appchecks').append(
-                  `<p><input type="checkbox" id="check-${key}" onClick="toggleApp('${key}')" /> ${key}</p>`
-                );
-                if (localStorage.getItem(`checked-${key}`) === null) {
-                  localStorage.setItem(`checked-${key}`, 'true');
-                }
-                if (localStorage.getItem(`checked-${key}`) === 'true') {
-                  $(`#check-${key}`).attr('checked', '');
-                }
-                $('#apps').append(
-                  `<a onClick="changeUrl('${key}')" target="_blank" class="link-${key} app" style="cursor:pointer;"><img src="${e.icon}" height="20" title=${key}></a>`
-                );
-                if (localStorage.getItem(`checked-${key}`) === 'false') {
-                  $(`.link-${key}`).hide();
-                }
-                $('#views').append(
-                  `<webview
-                  id="wv-${key}"
-                  class="wv web-${key}"
-                  src="${e.url}"
-                  style="display:inline-flex; width:100%; height:91.5vh;"
-                  allowpopups></webview>`
-                );
-              }
-              $('#buttons').append(
-                `<span onClick="reloadView('${key}')" class="wvbr webbr-${key}" style="cursor:pointer;"><img height="20" style="vertical-align:middle;" src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iaXNvLTg4NTktMSI/Pgo8IS0tIEdlbmVyYXRvcjogQWRvYmUgSWxsdXN0cmF0b3IgMTkuMC4wLCBTVkcgRXhwb3J0IFBsdWctSW4gLiBTVkcgVmVyc2lvbjogNi4wMCBCdWlsZCAwKSAgLS0+CjxzdmcgdmVyc2lvbj0iMS4xIiBpZD0iQ2FwYV8xIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB4PSIwcHgiIHk9IjBweCIKCSB2aWV3Qm94PSIwIDAgNDg5LjUzMyA0ODkuNTMzIiBzdHlsZT0iZW5hYmxlLWJhY2tncm91bmQ6bmV3IDAgMCA0ODkuNTMzIDQ4OS41MzM7IiB4bWw6c3BhY2U9InByZXNlcnZlIj4KPGc+Cgk8cGF0aCBkPSJNMjY4LjE3NSw0ODguMTYxYzk4LjItMTEsMTc2LjktODkuNSwxODguMS0xODcuN2MxNC43LTEyOC40LTg1LjEtMjM3LjctMjEwLjItMjM5LjF2LTU3LjZjMC0zLjItNC00LjktNi43LTIuOQoJCWwtMTE4LjYsODcuMWMtMiwxLjUtMiw0LjQsMCw1LjlsMTE4LjYsODcuMWMyLjcsMiw2LjcsMC4yLDYuNy0yLjl2LTU3LjVjODcuOSwxLjQsMTU4LjMsNzYuMiwxNTIuMywxNjUuNgoJCWMtNS4xLDc2LjktNjcuOCwxMzkuMy0xNDQuNywxNDQuMmMtODEuNSw1LjItMTUwLjgtNTMtMTYzLjItMTMwYy0yLjMtMTQuMy0xNC44LTI0LjctMjkuMi0yNC43Yy0xNy45LDAtMzEuOSwxNS45LTI5LjEsMzMuNgoJCUM0OS41NzUsNDE4Ljk2MSwxNTAuODc1LDUwMS4yNjEsMjY4LjE3NSw0ODguMTYxeiIgc3R5bGU9ImZpbGw6I2ZmZjsiLz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8L3N2Zz4K"></span>`
-              );
-              $('#buttons').append(
-                `<span onClick="back('${key}')" class="wvbb webbb-${key}" style="cursor:pointer;vertical-align:middle;font-size:20pt;font-weight:bold;margin-left:10px;">&larr;</span>`
-              );
-              $('#buttons').append(
-                `<span onClick="forward('${key}')" class="wvbf webbf-${key}" style="cursor:pointer;vertical-align:middle;font-size:20pt;font-weight:bold;margin-left:10px;">&rarr;</span>`
-              );
-              $('#buttons').append(
-                `<span onClick="copyUrl('${key}')" class="wvbc webbc-${key}" style="cursor:pointer;vertical-align:middle;font-size:20pt;font-weight:bold;margin-left:10px;"><i class="fa fa-files-o" aria-hidden="true"></i></span>`
               );
             }
-          }
-          if (localStorage.getItem(`custom1_url`) != '' && localStorage.getItem(`custom1_url`) != null) {
-            const custom1_url = localStorage.getItem(`custom1_url`);
-            const custom1_icon = localStorage.getItem(`custom1_icon`);
-            $('#custom1_url').attr('value', custom1_url);
-            $('#custom1_icon').attr('value', custom1_icon);
-            $('#apps').append(
-              `<a onClick="changeUrl('custom1')" target="_blank" class="link-custom1 app" style="cursor:pointer;"><img src="${custom1_icon}" height="20" title="Benutzerapp1"></a>`
+            if (e.teacher === false) {
+              $('#appchecks').append(
+                `<p><input type="checkbox" id="check-${key}" onClick="toggleApp('${key}')" /> ${key}</p>`
+              );
+              if (localStorage.getItem(`checked-${key}`) === null) {
+                localStorage.setItem(`checked-${key}`, 'true');
+              }
+              if (localStorage.getItem(`checked-${key}`) === 'true') {
+                $(`#check-${key}`).attr('checked', '');
+              }
+              $('#apps').append(
+                `<a onClick="changeUrl('${key}')" target="_blank" class="link-${key} app" style="cursor:pointer;"><img src="${e.icon}" height="20" title=${key}></a>`
+              );
+              if (localStorage.getItem(`checked-${key}`) === 'false') {
+                $(`.link-${key}`).hide();
+              }
+              $('#views').append(
+                `<webview
+                  id="wv-${key}"
+                  class="wv web-${key}"
+                  src="${e.url}"
+                  style="display:inline-flex; width:100%; height:91.5vh;"
+                  allowpopups></webview>`
+              );
+            }
+            $('#buttons').append(
+              `<span onClick="reloadView('${key}')" class="wvbr webbr-${key}" style="cursor:pointer;"><img height="20" style="vertical-align:middle;" src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iaXNvLTg4NTktMSI/Pgo8IS0tIEdlbmVyYXRvcjogQWRvYmUgSWxsdXN0cmF0b3IgMTkuMC4wLCBTVkcgRXhwb3J0IFBsdWctSW4gLiBTVkcgVmVyc2lvbjogNi4wMCBCdWlsZCAwKSAgLS0+CjxzdmcgdmVyc2lvbj0iMS4xIiBpZD0iQ2FwYV8xIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB4PSIwcHgiIHk9IjBweCIKCSB2aWV3Qm94PSIwIDAgNDg5LjUzMyA0ODkuNTMzIiBzdHlsZT0iZW5hYmxlLWJhY2tncm91bmQ6bmV3IDAgMCA0ODkuNTMzIDQ4OS41MzM7IiB4bWw6c3BhY2U9InByZXNlcnZlIj4KPGc+Cgk8cGF0aCBkPSJNMjY4LjE3NSw0ODguMTYxYzk4LjItMTEsMTc2LjktODkuNSwxODguMS0xODcuN2MxNC43LTEyOC40LTg1LjEtMjM3LjctMjEwLjItMjM5LjF2LTU3LjZjMC0zLjItNC00LjktNi43LTIuOQoJCWwtMTE4LjYsODcuMWMtMiwxLjUtMiw0LjQsMCw1LjlsMTE4LjYsODcuMWMyLjcsMiw2LjcsMC4yLDYuNy0yLjl2LTU3LjVjODcuOSwxLjQsMTU4LjMsNzYuMiwxNTIuMywxNjUuNgoJCWMtNS4xLDc2LjktNjcuOCwxMzkuMy0xNDQuNywxNDQuMmMtODEuNSw1LjItMTUwLjgtNTMtMTYzLjItMTMwYy0yLjMtMTQuMy0xNC44LTI0LjctMjkuMi0yNC43Yy0xNy45LDAtMzEuOSwxNS45LTI5LjEsMzMuNgoJCUM0OS41NzUsNDE4Ljk2MSwxNTAuODc1LDUwMS4yNjEsMjY4LjE3NSw0ODguMTYxeiIgc3R5bGU9ImZpbGw6I2ZmZjsiLz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8L3N2Zz4K"></span>`
             );
-            $('#views').append(
-              `<webview
+            $('#buttons').append(
+              `<span onClick="back('${key}')" class="wvbb webbb-${key}" style="cursor:pointer;vertical-align:middle;font-size:20pt;font-weight:bold;margin-left:10px;">&larr;</span>`
+            );
+            $('#buttons').append(
+              `<span onClick="forward('${key}')" class="wvbf webbf-${key}" style="cursor:pointer;vertical-align:middle;font-size:20pt;font-weight:bold;margin-left:10px;">&rarr;</span>`
+            );
+            $('#buttons').append(
+              `<span onClick="copyUrl('${key}')" class="wvbc webbc-${key}" style="cursor:pointer;vertical-align:middle;font-size:20pt;font-weight:bold;margin-left:10px;"><i class="fa fa-files-o" aria-hidden="true"></i></span>`
+            );
+          }
+        }
+        if (
+          localStorage.getItem(`custom1_url`) != '' &&
+          localStorage.getItem(`custom1_url`) != null
+        ) {
+          const custom1_url = localStorage.getItem(`custom1_url`);
+          const custom1_icon = localStorage.getItem(`custom1_icon`);
+          $('#custom1_url').attr('value', custom1_url);
+          $('#custom1_icon').attr('value', custom1_icon);
+          $('#apps').append(
+            `<a onClick="changeUrl('custom1')" target="_blank" class="link-custom1 app" style="cursor:pointer;"><img src="${custom1_icon}" height="20" title="Benutzerapp1"></a>`
+          );
+          $('#views').append(
+            `<webview
               id="wv-custom1"
               class="wv web-custom1"
               src="${custom1_url}"
               style="display:inline-flex; width:100%; height:91.5vh;"
               allowpopups></webview>`
-            );
-            $('#buttons').append(
-              `<span onClick="reloadView('custom1')" class="wvbr webbr-custom1" style="cursor:pointer;"><img height="20" style="vertical-align:middle;" src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iaXNvLTg4NTktMSI/Pgo8IS0tIEdlbmVyYXRvcjogQWRvYmUgSWxsdXN0cmF0b3IgMTkuMC4wLCBTVkcgRXhwb3J0IFBsdWctSW4gLiBTVkcgVmVyc2lvbjogNi4wMCBCdWlsZCAwKSAgLS0+CjxzdmcgdmVyc2lvbj0iMS4xIiBpZD0iQ2FwYV8xIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB4PSIwcHgiIHk9IjBweCIKCSB2aWV3Qm94PSIwIDAgNDg5LjUzMyA0ODkuNTMzIiBzdHlsZT0iZW5hYmxlLWJhY2tncm91bmQ6bmV3IDAgMCA0ODkuNTMzIDQ4OS41MzM7IiB4bWw6c3BhY2U9InByZXNlcnZlIj4KPGc+Cgk8cGF0aCBkPSJNMjY4LjE3NSw0ODguMTYxYzk4LjItMTEsMTc2LjktODkuNSwxODguMS0xODcuN2MxNC43LTEyOC40LTg1LjEtMjM3LjctMjEwLjItMjM5LjF2LTU3LjZjMC0zLjItNC00LjktNi43LTIuOQoJCWwtMTE4LjYsODcuMWMtMiwxLjUtMiw0LjQsMCw1LjlsMTE4LjYsODcuMWMyLjcsMiw2LjcsMC4yLDYuNy0yLjl2LTU3LjVjODcuOSwxLjQsMTU4LjMsNzYuMiwxNTIuMywxNjUuNgoJCWMtNS4xLDc2LjktNjcuOCwxMzkuMy0xNDQuNywxNDQuMmMtODEuNSw1LjItMTUwLjgtNTMtMTYzLjItMTMwYy0yLjMtMTQuMy0xNC44LTI0LjctMjkuMi0yNC43Yy0xNy45LDAtMzEuOSwxNS45LTI5LjEsMzMuNgoJCUM0OS41NzUsNDE4Ljk2MSwxNTAuODc1LDUwMS4yNjEsMjY4LjE3NSw0ODguMTYxeiIgc3R5bGU9ImZpbGw6I2ZmZjsiLz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8L3N2Zz4K"></span>`
-            );
-            $('#buttons').append(
-              `<span onClick="back('custom1')" class="wvbb webbb-custom1" style="cursor:pointer;vertical-align:middle;font-size:20pt;font-weight:bold;margin-left:10px;">&larr;</span>`
-            );
-            $('#buttons').append(
-              `<span onClick="forward('custom1')" class="wvbf webbf-custom1" style="cursor:pointer;vertical-align:middle;font-size:20pt;font-weight:bold;margin-left:10px;">&rarr;</span>`
-            );
-            $('#buttons').append(
-              `<span onClick="copyUrl('custom1')" class="wvbc webbc-custom1" style="cursor:pointer;vertical-align:middle;font-size:20pt;font-weight:bold;margin-left:10px;"><i class="fa fa-files-o" aria-hidden="true"></i></span>`
-            );
-          };
-          if (localStorage.getItem(`custom2_url`) != '' && localStorage.getItem(`custom2_url`) != null) {
-            const custom2_url = localStorage.getItem(`custom2_url`);
-            const custom2_icon = localStorage.getItem(`custom2_icon`);
-            $('#custom2_url').attr('value', custom2_url);
-            $('#custom2_icon').attr('value', custom2_icon);
-            $('#apps').append(
-              `<a onClick="changeUrl('custom2')" target="_blank" class="link-custom2 app" style="cursor:pointer;"><img src="${custom2_icon}" height="20" title="Benutzerapp2"></a>`
-            );
-            $('#views').append(
-              `<webview
+          );
+          $('#buttons').append(
+            `<span onClick="reloadView('custom1')" class="wvbr webbr-custom1" style="cursor:pointer;"><img height="20" style="vertical-align:middle;" src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iaXNvLTg4NTktMSI/Pgo8IS0tIEdlbmVyYXRvcjogQWRvYmUgSWxsdXN0cmF0b3IgMTkuMC4wLCBTVkcgRXhwb3J0IFBsdWctSW4gLiBTVkcgVmVyc2lvbjogNi4wMCBCdWlsZCAwKSAgLS0+CjxzdmcgdmVyc2lvbj0iMS4xIiBpZD0iQ2FwYV8xIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB4PSIwcHgiIHk9IjBweCIKCSB2aWV3Qm94PSIwIDAgNDg5LjUzMyA0ODkuNTMzIiBzdHlsZT0iZW5hYmxlLWJhY2tncm91bmQ6bmV3IDAgMCA0ODkuNTMzIDQ4OS41MzM7IiB4bWw6c3BhY2U9InByZXNlcnZlIj4KPGc+Cgk8cGF0aCBkPSJNMjY4LjE3NSw0ODguMTYxYzk4LjItMTEsMTc2LjktODkuNSwxODguMS0xODcuN2MxNC43LTEyOC40LTg1LjEtMjM3LjctMjEwLjItMjM5LjF2LTU3LjZjMC0zLjItNC00LjktNi43LTIuOQoJCWwtMTE4LjYsODcuMWMtMiwxLjUtMiw0LjQsMCw1LjlsMTE4LjYsODcuMWMyLjcsMiw2LjcsMC4yLDYuNy0yLjl2LTU3LjVjODcuOSwxLjQsMTU4LjMsNzYuMiwxNTIuMywxNjUuNgoJCWMtNS4xLDc2LjktNjcuOCwxMzkuMy0xNDQuNywxNDQuMmMtODEuNSw1LjItMTUwLjgtNTMtMTYzLjItMTMwYy0yLjMtMTQuMy0xNC44LTI0LjctMjkuMi0yNC43Yy0xNy45LDAtMzEuOSwxNS45LTI5LjEsMzMuNgoJCUM0OS41NzUsNDE4Ljk2MSwxNTAuODc1LDUwMS4yNjEsMjY4LjE3NSw0ODguMTYxeiIgc3R5bGU9ImZpbGw6I2ZmZjsiLz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8L3N2Zz4K"></span>`
+          );
+          $('#buttons').append(
+            `<span onClick="back('custom1')" class="wvbb webbb-custom1" style="cursor:pointer;vertical-align:middle;font-size:20pt;font-weight:bold;margin-left:10px;">&larr;</span>`
+          );
+          $('#buttons').append(
+            `<span onClick="forward('custom1')" class="wvbf webbf-custom1" style="cursor:pointer;vertical-align:middle;font-size:20pt;font-weight:bold;margin-left:10px;">&rarr;</span>`
+          );
+          $('#buttons').append(
+            `<span onClick="copyUrl('custom1')" class="wvbc webbc-custom1" style="cursor:pointer;vertical-align:middle;font-size:20pt;font-weight:bold;margin-left:10px;"><i class="fa fa-files-o" aria-hidden="true"></i></span>`
+          );
+        }
+        if (
+          localStorage.getItem(`custom2_url`) != '' &&
+          localStorage.getItem(`custom2_url`) != null
+        ) {
+          const custom2_url = localStorage.getItem(`custom2_url`);
+          const custom2_icon = localStorage.getItem(`custom2_icon`);
+          $('#custom2_url').attr('value', custom2_url);
+          $('#custom2_icon').attr('value', custom2_icon);
+          $('#apps').append(
+            `<a onClick="changeUrl('custom2')" target="_blank" class="link-custom2 app" style="cursor:pointer;"><img src="${custom2_icon}" height="20" title="Benutzerapp2"></a>`
+          );
+          $('#views').append(
+            `<webview
               id="wv-custom2"
               class="wv web-custom2"
               src="${custom2_url}"
               style="display:inline-flex; width:100%; height:91.5vh;"
               allowpopups></webview>`
-            );
-            $('#buttons').append(
-              `<span onClick="reloadView('custom2')" class="wvbr webbr-custom2" style="cursor:pointer;"><img height="20" style="vertical-align:middle;" src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iaXNvLTg4NTktMSI/Pgo8IS0tIEdlbmVyYXRvcjogQWRvYmUgSWxsdXN0cmF0b3IgMTkuMC4wLCBTVkcgRXhwb3J0IFBsdWctSW4gLiBTVkcgVmVyc2lvbjogNi4wMCBCdWlsZCAwKSAgLS0+CjxzdmcgdmVyc2lvbj0iMS4xIiBpZD0iQ2FwYV8xIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB4PSIwcHgiIHk9IjBweCIKCSB2aWV3Qm94PSIwIDAgNDg5LjUzMyA0ODkuNTMzIiBzdHlsZT0iZW5hYmxlLWJhY2tncm91bmQ6bmV3IDAgMCA0ODkuNTMzIDQ4OS41MzM7IiB4bWw6c3BhY2U9InByZXNlcnZlIj4KPGc+Cgk8cGF0aCBkPSJNMjY4LjE3NSw0ODguMTYxYzk4LjItMTEsMTc2LjktODkuNSwxODguMS0xODcuN2MxNC43LTEyOC40LTg1LjEtMjM3LjctMjEwLjItMjM5LjF2LTU3LjZjMC0zLjItNC00LjktNi43LTIuOQoJCWwtMTE4LjYsODcuMWMtMiwxLjUtMiw0LjQsMCw1LjlsMTE4LjYsODcuMWMyLjcsMiw2LjcsMC4yLDYuNy0yLjl2LTU3LjVjODcuOSwxLjQsMTU4LjMsNzYuMiwxNTIuMywxNjUuNgoJCWMtNS4xLDc2LjktNjcuOCwxMzkuMy0xNDQuNywxNDQuMmMtODEuNSw1LjItMTUwLjgtNTMtMTYzLjItMTMwYy0yLjMtMTQuMy0xNC44LTI0LjctMjkuMi0yNC43Yy0xNy45LDAtMzEuOSwxNS45LTI5LjEsMzMuNgoJCUM0OS41NzUsNDE4Ljk2MSwxNTAuODc1LDUwMS4yNjEsMjY4LjE3NSw0ODguMTYxeiIgc3R5bGU9ImZpbGw6I2ZmZjsiLz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8L3N2Zz4K"></span>`
-            );
-            $('#buttons').append(
-              `<span onClick="back('custom2')" class="wvbb webbb-custom2" style="cursor:pointer;vertical-align:middle;font-size:20pt;font-weight:bold;margin-left:10px;">&larr;</span>`
-            );
-            $('#buttons').append(
-              `<span onClick="forward('custom2')" class="wvbf webbf-custom2" style="cursor:pointer;vertical-align:middle;font-size:20pt;font-weight:bold;margin-left:10px;">&rarr;</span>`
-            );
-            $('#buttons').append(
-              `<span onClick="copyUrl('custom2')" class="wvbc webbc-custom2" style="cursor:pointer;vertical-align:middle;font-size:20pt;font-weight:bold;margin-left:10px;"><i class="fa fa-files-o" aria-hidden="true"></i></span>`
-            );
-          };
-          if (localStorage.getItem('autostart') === 'true') {
-            $('#autostart').attr('checked', 'true');
-          }
-          $('.wv').hide();
-          $('.wvbr').hide();
-          $('.wvbb').hide();
-          $('.wvbf').hide();
-          $('.wvbc').hide();
+          );
+          $('#buttons').append(
+            `<span onClick="reloadView('custom2')" class="wvbr webbr-custom2" style="cursor:pointer;"><img height="20" style="vertical-align:middle;" src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iaXNvLTg4NTktMSI/Pgo8IS0tIEdlbmVyYXRvcjogQWRvYmUgSWxsdXN0cmF0b3IgMTkuMC4wLCBTVkcgRXhwb3J0IFBsdWctSW4gLiBTVkcgVmVyc2lvbjogNi4wMCBCdWlsZCAwKSAgLS0+CjxzdmcgdmVyc2lvbj0iMS4xIiBpZD0iQ2FwYV8xIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB4PSIwcHgiIHk9IjBweCIKCSB2aWV3Qm94PSIwIDAgNDg5LjUzMyA0ODkuNTMzIiBzdHlsZT0iZW5hYmxlLWJhY2tncm91bmQ6bmV3IDAgMCA0ODkuNTMzIDQ4OS41MzM7IiB4bWw6c3BhY2U9InByZXNlcnZlIj4KPGc+Cgk8cGF0aCBkPSJNMjY4LjE3NSw0ODguMTYxYzk4LjItMTEsMTc2LjktODkuNSwxODguMS0xODcuN2MxNC43LTEyOC40LTg1LjEtMjM3LjctMjEwLjItMjM5LjF2LTU3LjZjMC0zLjItNC00LjktNi43LTIuOQoJCWwtMTE4LjYsODcuMWMtMiwxLjUtMiw0LjQsMCw1LjlsMTE4LjYsODcuMWMyLjcsMiw2LjcsMC4yLDYuNy0yLjl2LTU3LjVjODcuOSwxLjQsMTU4LjMsNzYuMiwxNTIuMywxNjUuNgoJCWMtNS4xLDc2LjktNjcuOCwxMzkuMy0xNDQuNywxNDQuMmMtODEuNSw1LjItMTUwLjgtNTMtMTYzLjItMTMwYy0yLjMtMTQuMy0xNC44LTI0LjctMjkuMi0yNC43Yy0xNy45LDAtMzEuOSwxNS45LTI5LjEsMzMuNgoJCUM0OS41NzUsNDE4Ljk2MSwxNTAuODc1LDUwMS4yNjEsMjY4LjE3NSw0ODguMTYxeiIgc3R5bGU9ImZpbGw6I2ZmZjsiLz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8L3N2Zz4K"></span>`
+          );
+          $('#buttons').append(
+            `<span onClick="back('custom2')" class="wvbb webbb-custom2" style="cursor:pointer;vertical-align:middle;font-size:20pt;font-weight:bold;margin-left:10px;">&larr;</span>`
+          );
+          $('#buttons').append(
+            `<span onClick="forward('custom2')" class="wvbf webbf-custom2" style="cursor:pointer;vertical-align:middle;font-size:20pt;font-weight:bold;margin-left:10px;">&rarr;</span>`
+          );
+          $('#buttons').append(
+            `<span onClick="copyUrl('custom2')" class="wvbc webbc-custom2" style="cursor:pointer;vertical-align:middle;font-size:20pt;font-weight:bold;margin-left:10px;"><i class="fa fa-files-o" aria-hidden="true"></i></span>`
+          );
         }
-      );
+        if (localStorage.getItem('autostart') === 'true') {
+          $('#autostart').attr('checked', 'true');
+        }
+        $('.wv').hide();
+        $('.wvbr').hide();
+        $('.wvbb').hide();
+        $('.wvbf').hide();
+        $('.wvbc').hide();
+      }
     }, 3000);
 
     document.addEventListener('keydown', (event) => {
@@ -306,23 +321,41 @@ export default class Main extends React.Component {
               <div id="appchecks" className="twoColumn" />
               <h2>Benutzerdefinierte Webapp hinzufügen</h2>
               <h3>Erste benutzerdefinierte App</h3>
-              <input type="text" id="custom1_url" size="80" name="url_website" placeholder="https://example.com" />
-              <label htmlFor="url_website">
-                URL der Website
-              </label><p></p>
-              <input type="text" id="custom1_icon" size="80" name="icon_website" placeholder="https://example.com/icon.png" />
-              <label htmlFor="icon_website">
-                Icon der Website
-              </label>
+              <input
+                type="text"
+                id="custom1_url"
+                size="80"
+                name="url_website"
+                placeholder="https://example.com"
+              />
+              <label htmlFor="url_website">URL der Website</label>
+              <p />
+              <input
+                type="text"
+                id="custom1_icon"
+                size="80"
+                name="icon_website"
+                placeholder="https://example.com/icon.png"
+              />
+              <label htmlFor="icon_website">Icon der Website</label>
               <h3>Zweite benutzerdefinierte App</h3>
-              <input type="text" id="custom2_url" size="80" name="url_website" placeholder="https://example.com" />
-              <label htmlFor="url_website">
-                URL der Website
-              </label><p></p>
-              <input type="text" id="custom2_icon" size="80" name="icon_website" placeholder="https://example.com/icon.png" />
-              <label htmlFor="icon_website">
-                Icon der Website
-              </label>
+              <input
+                type="text"
+                id="custom2_url"
+                size="80"
+                name="url_website"
+                placeholder="https://example.com"
+              />
+              <label htmlFor="url_website">URL der Website</label>
+              <p />
+              <input
+                type="text"
+                id="custom2_icon"
+                size="80"
+                name="icon_website"
+                placeholder="https://example.com/icon.png"
+              />
+              <label htmlFor="icon_website">Icon der Website</label>
               <button onClick={saveSettings} id="sbb">
                 Speichern
               </button>
