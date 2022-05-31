@@ -12,6 +12,7 @@ import $ from 'jquery';
 import monkey from '../../assets/monkey.png';
 import u1 from '../../assets/uebersicht.png';
 import u2 from '../../assets/doge.png';
+import sb from '../../assets/settings.png';
 
 // TODO: Single-Sign On via injections (Bsp.: $("#userNameInput" ).attr( "value", "dennis.clausen@bbz-rd-eck.de" ); für Outlook)
 
@@ -285,7 +286,7 @@ export default class Main extends React.Component {
               <div id="apps" />
               <img
                 id="settingsb"
-                src="https://www.pngall.com/wp-content/uploads/4/Gear.png"
+                src={sb}
                 alt="Einstellungen"
                 // className="debug"
                 height="20"
