@@ -4,11 +4,12 @@ body {
   margin: 0;
   padding: 0;
   overflow: hidden;
+  overflow-x: hidden !important;
   font-size: 8pt;
 }
 
 header {
-  background: #173a64;
+  background: #173a64 url(../../assets/background.png) center center;
   color: #fff;
   padding: 5px;
   height: 55px;
@@ -40,7 +41,6 @@ header {
 #buttons {
   text-align: right;
   width: 15%;
-  background: #173a64;
   margin-top: 12px;
   margin-left: 32px;
 }
@@ -57,13 +57,11 @@ header {
 
 #headnote {
   width: 22%;
-  background: #173a64;
 }
 
 #apps a {
   margin: 4px;
   width: 55%;
-  background: #173a64;
 }
 
 #apps {
@@ -186,6 +184,15 @@ h1 {
   height: calc(100vh - 70px);
   margin-left: -4px;
   margin-top: -4px;
+}
+
+#settings {
+  background: url(../../assets/background2.jpg);
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center center;
+  margin: 0 -20px;
+  padding: 20px;
 }
 
 #settingsb {
