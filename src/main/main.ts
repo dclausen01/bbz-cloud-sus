@@ -24,7 +24,6 @@ let zoomFaktor = 1.0;
 // https://stackoverflow.com/questions/48148021/how-to-import-ipcrenderer-in-react/59796326#59796326?newreg=2a6a7aee6ffc48ad8840a25d205717d9
 
 ipcMain.on('autostart', (event, args) => {
-  console.log('Autostart getriggert: ', args);
   app.setLoginItemSettings({
     openAtLogin: args,
     openAsHidden: true,
@@ -32,7 +31,6 @@ ipcMain.on('autostart', (event, args) => {
 });
 
 ipcMain.on('zoom', (event, args) => {
-  console.log('Zoom getriggert: ', args);
   zoomFaktor = args;
   mainWindow.webContents.setZoomFactor(zoomFaktor);
 });
