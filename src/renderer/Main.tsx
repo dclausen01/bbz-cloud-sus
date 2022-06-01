@@ -15,7 +15,10 @@ import u2 from '../../assets/doge.png';
 import sb from '../../assets/settings.png';
 import { ipcRenderer } from 'electron/renderer';
 let zoomFaktor = 1.0;
-if (localStorage.getItem('zoomFaktor') !== null) {
+if (
+  localStorage.getItem('zoomFaktor') !== null &&
+  parseFloat(localStorage.getItem('zoomFaktor')) > 0
+) {
   zoomFaktor = parseFloat(localStorage.getItem('zoomFaktor'));
 }
 
@@ -217,7 +220,7 @@ export default class Main extends React.Component {
           );
         }
         if (
-          localStorage.getItem(`custom2_url`) != '' &&
+          localStorage.getItem(`custom2_url`) !== '' &&
           localStorage.getItem(`custom2_url`) != null
         ) {
           const custom2_url = localStorage.getItem(`custom2_url`);
@@ -266,8 +269,14 @@ export default class Main extends React.Component {
         );
       } else if (event.ctrlKey && event.keyCode === 187) {
         zoomFaktor += 0.2; // Zoom in um 20%
+        if (zoomFaktor > 5.0) {
+          zoomFaktor = 5.0;
+        }
       } else if (event.ctrlKey && event.keyCode === 189) {
         zoomFaktor -= 0.2; // Zoom in um 20%
+        if (zoomFaktor < 0.2) {
+          zoomFaktor = 0.2;
+        }
       }
       localStorage.setItem('zoomFaktor', zoomFaktor.toString());
       window.api.send('zoom', zoomFaktor);
