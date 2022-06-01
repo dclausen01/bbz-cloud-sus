@@ -13,8 +13,15 @@ import monkey from '../../assets/monkey.png';
 import u1 from '../../assets/uebersicht.png';
 import u2 from '../../assets/doge.png';
 import sb from '../../assets/settings.png';
+import { ipcRenderer } from 'electron/renderer';
+let zoomFaktor = 1.0;
+if (localStorage.getItem('zoomFaktor') !== null) {
+  zoomFaktor = parseFloat(localStorage.getItem('zoomFaktor'));
+}
 
 // TODO: Single-Sign On via injections (Bsp.: $("#userNameInput" ).attr( "value", "dennis.clausen@bbz-rd-eck.de" ); für Outlook)
+
+window.api.send('zoom', zoomFaktor);
 
 var doge;
 const isTeacher = true;
@@ -257,7 +264,13 @@ export default class Main extends React.Component {
         $('#doge').html(
           '<video src="https://f001.backblazeb2.com/file/koyuspace-media/cache/media_attachments/files/108/216/721/989/948/797/original/4523bd1f0de68193.mp4" width="640" height="480" autoplay></video>'
         );
+      } else if (event.ctrlKey && event.keyCode === 187) {
+        zoomFaktor += 0.2; // Zoom in um 20%
+      } else if (event.ctrlKey && event.keyCode === 189) {
+        zoomFaktor -= 0.2; // Zoom in um 20%
       }
+      localStorage.setItem('zoomFaktor', zoomFaktor.toString());
+      window.api.send('zoom', zoomFaktor);
     });
   }
 
@@ -278,8 +291,7 @@ export default class Main extends React.Component {
                   <h1>BBZ Cloud</h1>
                 </p>
                 <p>
-                  Aktuell sind es{' '}
-                  <span id="temperature" />
+                  Aktuell sind es <span id="temperature" />
                   °C
                 </p>
               </div>
@@ -325,7 +337,7 @@ export default class Main extends React.Component {
               <input
                 type="text"
                 id="custom1_url"
-                size="80"
+                size="50"
                 name="url_website"
                 placeholder="https://example.com"
               />
@@ -334,7 +346,7 @@ export default class Main extends React.Component {
               <input
                 type="text"
                 id="custom1_icon"
-                size="80"
+                size="50"
                 name="icon_website"
                 placeholder="https://example.com/icon.png"
               />
@@ -343,7 +355,7 @@ export default class Main extends React.Component {
               <input
                 type="text"
                 id="custom2_url"
-                size="80"
+                size="50"
                 name="url_website"
                 placeholder="https://example.com"
               />
@@ -352,7 +364,7 @@ export default class Main extends React.Component {
               <input
                 type="text"
                 id="custom2_icon"
-                size="80"
+                size="50"
                 name="icon_website"
                 placeholder="https://example.com/icon.png"
               />
