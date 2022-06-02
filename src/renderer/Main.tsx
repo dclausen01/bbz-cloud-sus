@@ -39,6 +39,7 @@ function reloadPage() {
 }
 
 function saveSettings() {
+  // Autostart Settings
   const autostart = document.querySelector('input');
   autostart.addEventListener(
     'click',
@@ -49,6 +50,7 @@ function saveSettings() {
   } else {
     localStorage.setItem('autostart', 'false');
   }
+  // Custom WebApps Settings
   const custom1_url = document.getElementById('custom1_url').value;
   const custom1_icon = document.getElementById('custom1_icon').value;
   localStorage.setItem('custom1_url', custom1_url);
