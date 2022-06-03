@@ -113,7 +113,8 @@ export default class Main extends React.Component {
         localStorage.setItem('object', '');
       }
       $.getJSON(
-        'https://privateorg-pink-platypus.github.io/bbz-cloud/object.json',
+        '../../assets/object.json',
+        // 'https://privateorg-pink-platypus.github.io/bbz-cloud/object.json',
         function (links) {
           // TODO: Add menu for smaller screens
           if (links !== localStorage.getItem('object')) {
