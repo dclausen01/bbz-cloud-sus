@@ -13,7 +13,8 @@ import monkey from '../../assets/monkey.png';
 import u1 from '../../assets/uebersicht.png';
 import u2 from '../../assets/doge.png';
 import sb from '../../assets/settings.png';
-import { ipcRenderer } from 'electron/renderer';
+import links from '../../assets/object.json';
+// import { ipcRenderer } from 'electron/renderer';
 let zoomFaktor = 1.0;
 if (
   localStorage.getItem('zoomFaktor') !== null &&
@@ -112,16 +113,10 @@ export default class Main extends React.Component {
       if (localStorage.getItem('object') === null) {
         localStorage.setItem('object', '');
       }
-      $.getJSON(
-        '../../assets/object.json',
-        // 'https://privateorg-pink-platypus.github.io/bbz-cloud/object.json',
-        function (links) {
-          // TODO: Add menu for smaller screens
-          if (links !== localStorage.getItem('object')) {
-            localStorage.setItem('object', JSON.stringify(links));
-          }
-        }
-      );
+
+      if (links !== localStorage.getItem('object')) {
+        localStorage.setItem('object', JSON.stringify(links));
+      }
       var bobj = JSON.parse(localStorage.getItem('object'));
       if (bobj !== '') {
         for (const [key, e] of Object.entries(bobj)) {
