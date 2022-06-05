@@ -255,12 +255,12 @@ export default class Main extends React.Component {
           '<video src="https://f001.backblazeb2.com/file/koyuspace-media/cache/media_attachments/files/108/216/721/989/948/797/original/4523bd1f0de68193.mp4" width="640" height="480" autoplay></video>'
         );
       } else if (event.ctrlKey && event.keyCode === 187) {
-        zoomFaktor += 0.2; // Zoom in um 20%
+        zoomFaktor += 0.1; // Zoom in um 10%
         if (zoomFaktor > 5.0) {
           zoomFaktor = 5.0;
         }
       } else if (event.ctrlKey && event.keyCode === 189) {
-        zoomFaktor -= 0.2; // Zoom in um 20%
+        zoomFaktor -= 0.1; // Zoom in um 10%
         if (zoomFaktor < 0.2) {
           zoomFaktor = 0.2;
         }
