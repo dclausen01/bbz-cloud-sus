@@ -49,7 +49,8 @@
     },
     "linux": {
       "target": [
-        "snap"
+        "snap",
+        "deb"
       ],
       "category": "Office",
       "desktop": {
