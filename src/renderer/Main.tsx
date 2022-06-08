@@ -386,6 +386,10 @@ export default class Main extends React.Component {
             onClick={reloadPage}
             onKeyDown={reloadPage}
           />
+          <h3>
+            Da konnte irgendetwas nicht geladen werden! Ein Klick auf den Affen
+            lädt die App neu!
+          </h3>
         </div>
       </div>
     );
