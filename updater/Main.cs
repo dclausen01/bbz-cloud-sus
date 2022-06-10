@@ -21,7 +21,7 @@ namespace bbzupdate
       label1.Text = Properties.strings.checking;
       try
       {
-        new HttpClient().GetStringAsync("http://85.215.216.178:8081/updater/").Wait();
+        new HttpClient().GetStringAsync("http://85.215.216.178:80/updater/").Wait();
       }
       catch
       {
