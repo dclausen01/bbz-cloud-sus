@@ -12,7 +12,8 @@ import {
   app,
   BrowserWindow,
   shell,
-  Notification,
+  // Notification,
+  dialog,
   ipcMain,
   Menu,
   systemPreferences,
@@ -22,6 +23,7 @@ import log from 'electron-log';
 import { resolveHtmlPath } from './util';
 
 let zoomFaktor = 1.0;
+let messageBoxIsDisplayed = false;
 // https://stackoverflow.com/questions/48148021/how-to-import-ipcrenderer-in-react/59796326#59796326?newreg=2a6a7aee6ffc48ad8840a25d205717d9
 
 ipcMain.on('autostart', (event, args) => {
@@ -244,7 +246,7 @@ app.on('web-contents-created', (event, contents) => {
   contents.on('new-window', handleNewWindow);
 
   function handleDownloads(event, item, webContents) {
-    item.once('done', (event, state) => {
+    item.on('done', (event, state) => {
       if (state === 'completed') {
         const RESOURCES_PATH = app.isPackaged
           ? path.join(process.resourcesPath, 'assets')
@@ -252,11 +254,24 @@ app.on('web-contents-created', (event, contents) => {
         const getAssetPath = (...paths: string[]): string => {
           return path.join(RESOURCES_PATH, ...paths);
         };
-        new Notification({
+        /* new Notification({
           title: 'BBZ-Cloud',
           body: 'Download abgeschlossen.',
           icon: getAssetPath('icon.png'),
-        }).show();
+        }).show(); */
+        const options = {
+          type: 'info',
+          buttons: ['Ok'],
+          title: 'Download',
+          message: 'Download abgeschlossen',
+        };
+        if (!messageBoxIsDisplayed) {
+          messageBoxIsDisplayed = true;
+          const response = dialog.showMessageBox(mainWindow, options);
+          response.then(() => {
+            messageBoxIsDisplayed = false;
+          });
+        }
       } else {
         console.log(`Download failed: ${state}`);
       }
