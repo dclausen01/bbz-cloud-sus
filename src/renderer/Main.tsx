@@ -14,7 +14,10 @@ import u1 from '../../assets/uebersicht.png';
 import u2 from '../../assets/doge.png';
 import sb from '../../assets/settings.png';
 import links from '../../assets/object.json';
+import version from '../../package.json';
+const versionApp = version.version;
 let zoomFaktor = 1.0;
+
 if (
   localStorage.getItem('zoomFaktor') !== null &&
   parseFloat(localStorage.getItem('zoomFaktor')) > 0
@@ -23,6 +26,7 @@ if (
 }
 
 // TODO: Single-Sign On via injections (Bsp.: $("#userNameInput" ).attr( "value", "dennis.clausen@bbz-rd-eck.de" ); für Outlook)
+//        https://stackoverflow.com/questions/7961568/fill-fields-in-webview-automatically
 
 window.api.send('zoom', zoomFaktor);
 
@@ -365,6 +369,9 @@ export default class Main extends React.Component {
                 placeholder="https://example.com/icon.png"
               />
               <label htmlFor="icon_website">Icon der Website</label>
+              <p>
+                <b>BBZ Cloud App Version:</b> {versionApp} | <b>Entwicklerin:</b> Leonie
+              </p>
               <button onClick={saveSettings} id="sbb">
                 Speichern
               </button>
