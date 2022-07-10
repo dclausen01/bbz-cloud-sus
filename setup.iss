@@ -20,10 +20,10 @@ AppSupportURL={#MyAppURL}
 AppUpdatesURL={#MyAppURL}
 DefaultDirName={autopf}\{#MyAppName}
 DisableProgramGroupPage=yes
-LicenseFile=C:\Users\me\code\bbz-cloud\LICENSE
+LicenseFile=D:\code\bbz-cloud\LICENSE
 ; Remove the following line to run in administrative install mode (install for all users.)
 PrivilegesRequired=lowest
-OutputDir=C:\Users\me\OneDrive\Desktop
+OutputDir=D:\OneDrive\Desktop
 OutputBaseFilename=bbz-cloud-setup_stable
 Compression=lzma
 SolidCompression=yes
@@ -36,13 +36,13 @@ Name: "german"; MessagesFile: "compiler:Languages\German.isl"
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
 
 [Files]
-Source: "C:\Users\me\code\bbz-cloud\updater\bin\Release\net6.0-windows\publish\{#MyAppExeName}"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Users\me\code\bbz-cloud\updater\bin\Release\net6.0-windows\de\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
-Source: "C:\Users\me\code\bbz-cloud\updater\bin\Release\net6.0-windows\publish\BBZ-Cloud.deps.json"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Users\me\code\bbz-cloud\updater\bin\Release\net6.0-windows\publish\BBZ-Cloud.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Users\me\code\bbz-cloud\updater\bin\Release\net6.0-windows\publish\BBZ-Cloud.pdb"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Users\me\code\bbz-cloud\updater\bin\Release\net6.0-windows\publish\BBZ-Cloud.runtimeconfig.json"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Users\me\code\bbz-cloud\updater\bin\Release\net6.0-windows\publish\channel"; DestDir: "{app}"; Flags: ignoreversion
+Source: "D:\code\bbz-cloud\updater\bin\Release\net6.0-windows\publish\{#MyAppExeName}"; DestDir: "{app}"; Flags: ignoreversion
+Source: "D:\code\bbz-cloud\updater\bin\Release\net6.0-windows\de\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "D:\code\bbz-cloud\updater\bin\Release\net6.0-windows\publish\BBZ-Cloud.deps.json"; DestDir: "{app}"; Flags: ignoreversion
+Source: "D:\code\bbz-cloud\updater\bin\Release\net6.0-windows\publish\BBZ-Cloud.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "D:\code\bbz-cloud\updater\bin\Release\net6.0-windows\publish\BBZ-Cloud.pdb"; DestDir: "{app}"; Flags: ignoreversion
+Source: "D:\code\bbz-cloud\updater\bin\Release\net6.0-windows\publish\BBZ-Cloud.runtimeconfig.json"; DestDir: "{app}"; Flags: ignoreversion
+Source: "D:\code\bbz-cloud\updater\bin\Release\net6.0-windows\publish\channel"; DestDir: "{app}"; Flags: ignoreversion
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Icons]
