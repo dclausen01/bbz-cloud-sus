@@ -40,7 +40,7 @@ namespace bbzupdate
       {
         label1.Text = Properties.strings.download;
         string channel = File.ReadAllLines("channel")[0];
-        latest = Convert.ToInt32(new HttpClient().GetStringAsync("http://85.215.216.178:8081/updater/" + channel + "/latest").Result);
+        latest = Convert.ToInt32(new HttpClient().GetStringAsync("http://85.215.216.178:80/updater/" + channel + "/latest").Result);
         if (File.Exists("version"))
         {
           version = Convert.ToInt32(File.ReadAllLines("version")[0]);
@@ -69,7 +69,7 @@ namespace bbzupdate
             Process.Start("Application.exe");
             this.Close();
           };
-          webClient.DownloadFileAsync(new Uri("http://85.215.216.178:8081/updater/" + channel + "/release.zip"), "release.zip");
+          webClient.DownloadFileAsync(new Uri("http://85.215.216.178:80/updater/" + channel + "/release.zip"), "release.zip");
         }
         else
         {
