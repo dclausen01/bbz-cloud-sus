@@ -37,7 +37,7 @@ Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{
 
 [Files]
 Source: "D:\code\bbz-cloud\updater\bin\Release\net6.0-windows\publish\{#MyAppExeName}"; DestDir: "{app}"; Flags: ignoreversion
-Source: "D:\code\bbz-cloud\updater\bin\Release\net6.0-windows\de\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "D:\code\bbz-cloud\updater\bin\Release\net6.0-windows\de\*"; DestDir: "{app}\de"; Flags: ignoreversion recursesubdirs createallsubdirs
 Source: "D:\code\bbz-cloud\updater\bin\Release\net6.0-windows\publish\BBZ-Cloud.deps.json"; DestDir: "{app}"; Flags: ignoreversion
 Source: "D:\code\bbz-cloud\updater\bin\Release\net6.0-windows\publish\BBZ-Cloud.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "D:\code\bbz-cloud\updater\bin\Release\net6.0-windows\publish\BBZ-Cloud.pdb"; DestDir: "{app}"; Flags: ignoreversion
