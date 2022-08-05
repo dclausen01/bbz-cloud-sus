@@ -17,6 +17,7 @@ import {
   ipcMain,
   Menu,
   systemPreferences,
+  autoUpdater,
 } from 'electron';
 // import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
@@ -39,7 +40,64 @@ ipcMain.on('zoom', (event, args) => {
 
 var fs = require('fs');
 var https = require('https');
-const { appUpdater } = require('./autoupdater');
+
+const updateserver =
+  'https://bbz-cloud-updater-mqyqbo42f-dclausen01.vercel.app';
+// eslint-disable-next-line prettier/prettier
+const updaterFeedURL = `${updateserver}/update/${
+  process.platform
+}/${app.getVersion()}`;
+
+function appUpdater() {
+  autoUpdater.setFeedURL({ url: updaterFeedURL });
+  /* Log whats happening
+	TODO send autoUpdater events to renderer so that we could console log it in developer tools
+	You could alsoe use nslog or other logging to see what's happening */
+  autoUpdater.on('error', (err) => console.log(err));
+  autoUpdater.on('checking-for-update', () =>
+    console.log('checking-for-update')
+  );
+  autoUpdater.on('update-available', () => console.log('update-available'));
+  autoUpdater.on('update-not-available', () =>
+    console.log('update-not-available')
+  );
+
+  // Ask the user if update is available
+  autoUpdater.on('update-downloaded', (event, releaseNotes, releaseName) => {
+    let message =
+      // eslint-disable-next-line prefer-template
+      app.getName() +
+      ' ' +
+      releaseName +
+      ' ist als Update verfügbar. Das Update wird automatisch installiert, wenn die App das nächste Mal gestartet wird.';
+    if (releaseNotes) {
+      const splitNotes = releaseNotes.split(/[^\r]\n/);
+      message += '\n\nRelease notes:\n';
+      splitNotes.forEach((notes) => {
+        message += `${notes}\n\n`;
+      });
+    }
+    // Ask user to update the app
+    dialog.showMessageBox(
+      {
+        type: 'question',
+        buttons: ['Installieren und sofort neu starten', 'Später installieren'],
+        defaultId: 0,
+        message:
+          // eslint-disable-next-line prefer-template
+          'Eine neue Version von ' + app.getName() + ' wurde heruntergeladen.',
+        detail: message,
+      },
+      (response) => {
+        if (response === 0) {
+          setTimeout(() => autoUpdater.quitAndInstall(), 1);
+        }
+      }
+    );
+  });
+  // init for updates
+  autoUpdater.checkForUpdates();
+}
 
 const RESOURCES_PATH = app.isPackaged
   ? path.join(process.resourcesPath, 'assets')
@@ -207,6 +265,11 @@ function isWinzigWeich(url: string) {
 
 // Open third-party links in browser
 app.on('web-contents-created', (event, contents) => {
+  const checkOS = isWindowsOrmacOS();
+  if (checkOS && !isDevelopment) {
+    // Initate auto-updates on macOs and windows
+    appUpdater();
+  }
   // eslint-disable-next-line no-var
   var handleNewWindow = (e, url) => {
     if (isWinzigWeich(url) || url.includes('download.aspx')) {
@@ -293,10 +356,5 @@ app
       // dock icon is clicked and there are no other windows open.
       if (mainWindow === null) createWindow();
     });
-    const checkOS = isWindowsOrmacOS();
-    if (checkOS && !isDevelopment) {
-      // Initate auto-updates on macOs and windows
-      appUpdater();
-    }
   })
   .catch(console.log);
