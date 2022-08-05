@@ -131,16 +131,6 @@ const createWindow = async () => {
     }
   });
 
-  const page = mainWindow.webContents;
-
-  page.once('did-frame-finish-load', () => {
-    const checkOS = isWindowsOrmacOS();
-    if (checkOS && !isDevelopment) {
-      // Initate auto-updates on macOs and windows
-      appUpdater();
-    }
-  });
-
   mainWindow.on('closed', () => {
     mainWindow = null;
   });
@@ -303,5 +293,10 @@ app
       // dock icon is clicked and there are no other windows open.
       if (mainWindow === null) createWindow();
     });
+    const checkOS = isWindowsOrmacOS();
+    if (checkOS && !isDevelopment) {
+      // Initate auto-updates on macOs and windows
+      appUpdater();
+    }
   })
   .catch(console.log);
