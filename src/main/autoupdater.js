@@ -2,14 +2,10 @@ const os = require('os');
 const { app, autoUpdater, dialog } = require('electron');
 const version = app.getVersion();
 const platform = os.platform() + '_' + os.arch(); // usually returns darwin_64
-
-const updaterFeedURL =
-  // eslint-disable-next-line prefer-template
-  'https://bbz-cloud-updater-mqyqbo42f-dclausen01.vercel.app' +
-  platform +
-  '/' +
-  version;
-// replace updaterFeedURL with http://yourappname.herokuapp.com
+const server = 'https://bbz-cloud-updater-mqyqbo42f-dclausen01.vercel.app';
+const updaterFeedURL = `${server}/update/${
+  process.platform
+}/${app.getVersion()}`;
 
 function appUpdater() {
   autoUpdater.setFeedURL(updaterFeedURL);
