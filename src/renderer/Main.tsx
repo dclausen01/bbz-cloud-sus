@@ -15,6 +15,7 @@ import u2 from '../../assets/doge.png';
 import sb from '../../assets/settings.png';
 import links from '../../assets/object.json';
 import version from '../../package.json';
+
 const versionApp = version.version;
 let zoomFaktor = 1.0;
 
