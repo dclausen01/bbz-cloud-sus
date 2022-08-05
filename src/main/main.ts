@@ -17,7 +17,6 @@ import {
   ipcMain,
   Menu,
   systemPreferences,
-  autoUpdater,
 } from 'electron';
 // import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
@@ -40,27 +39,26 @@ ipcMain.on('zoom', (event, args) => {
 
 var fs = require('fs');
 var https = require('https');
+const { appUpdater } = require('./autoupdater');
 
 const RESOURCES_PATH = app.isPackaged
   ? path.join(process.resourcesPath, 'assets')
   : path.join(__dirname, '../../assets');
 
-if (app.isPackaged) {
-  const server = 'https://bbz-cloud-updater-mqyqbo42f-dclausen01.vercel.app';
-  const url = `${server}/update/${process.platform}/${app.getVersion()}`;
-  autoUpdater.setFeedURL({ url });
-}
-
 const getAssetPath = (...paths: string[]): string => {
   return path.join(RESOURCES_PATH, ...paths);
 };
 
-export default class AppUpdater {
+/* export default class AppUpdater {
   constructor() {
     log.transports.file.level = 'info';
     autoUpdater.logger = log;
     autoUpdater.checkForUpdatesAndNotify();
   }
+} */
+
+function isWindowsOrmacOS() {
+  return process.platform === 'darwin' || process.platform === 'win32';
 }
 
 let mainWindow: BrowserWindow | null = null;
@@ -130,6 +128,16 @@ const createWindow = async () => {
       mainWindow.minimize();
     } else {
       mainWindow.show();
+    }
+  });
+
+  const page = mainWindow.webContents;
+
+  page.once('did-frame-finish-load', () => {
+    const checkOS = isWindowsOrmacOS();
+    if (checkOS && !isDevelopment) {
+      // Initate auto-updates on macOs and windows
+      appUpdater();
     }
   });
 
