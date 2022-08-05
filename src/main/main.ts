@@ -17,14 +17,16 @@ import {
   ipcMain,
   Menu,
   systemPreferences,
+  autoUpdater
 } from 'electron';
-import { autoUpdater } from 'electron-updater';
+// import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
 import { resolveHtmlPath } from './util';
 
 let zoomFaktor = 1.0;
 let messageBoxIsDisplayed = false;
 // https://stackoverflow.com/questions/48148021/how-to-import-ipcrenderer-in-react/59796326#59796326?newreg=2a6a7aee6ffc48ad8840a25d205717d9
+
 
 ipcMain.on('autostart', (event, args) => {
   app.setLoginItemSettings({
@@ -44,6 +46,12 @@ var https = require('https');
 const RESOURCES_PATH = app.isPackaged
   ? path.join(process.resourcesPath, 'assets')
   : path.join(__dirname, '../../assets');
+
+if (app.isPackaged) {
+  const server = 'https://bbz-cloud-updater-mqyqbo42f-dclausen01.vercel.app';
+  const url = `${server}/update/${process.platform}/${app.getVersion()}`;
+  autoUpdater.setFeedURL({ url });
+}
 
 const getAssetPath = (...paths: string[]): string => {
   return path.join(RESOURCES_PATH, ...paths);
