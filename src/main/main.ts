@@ -200,6 +200,17 @@ const createWindow = async () => {
     shell.openExternal(edata.url);
     return { action: 'deny' };
   });
+  const checkOS = isWindowsOrmacOS();
+  if (checkOS && !isDevelopment) {
+    // Initate auto-updates on macOs and windows
+    appUpdater();
+    dialog.showMessageBox({
+      type: 'info',
+      buttons: ['OK'],
+      defaultId: 0,
+      message: 'Updater ist durchgelaufen',
+    });
+  }
 };
 
 /**
@@ -265,11 +276,6 @@ function isWinzigWeich(url: string) {
 
 // Open third-party links in browser
 app.on('web-contents-created', (event, contents) => {
-  const checkOS = isWindowsOrmacOS();
-  if (checkOS && !isDevelopment) {
-    // Initate auto-updates on macOs and windows
-    appUpdater();
-  }
   // eslint-disable-next-line no-var
   var handleNewWindow = (e, url) => {
     if (isWinzigWeich(url) || url.includes('download.aspx')) {
