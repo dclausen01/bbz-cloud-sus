@@ -70,8 +70,7 @@
     "publish": {
       "provider": "github",
       "owner": "koyuawsmbrtn",
-      "repo": "bbz-cloud",
-      "token": "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"
+      "repo": "bbz-cloud"<<<<<<<<<<<<<<<<<<<<
     }
   },
   "repository": {
