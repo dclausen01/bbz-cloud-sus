@@ -1,6 +1,6 @@
 {
   "name": "bbzcloud",
-  "version": "1.2.5",
+  "version": "1.2.6",
   "description": "Die Desktop-App für die BBZ Cloud - eine All-in-One-Plattform für Unterricht und Zusammenarbeit",
   "scripts": {
     "build": "concurrently \"npm run build:main\" \"npm run build:renderer\"",
@@ -70,7 +70,8 @@
     "publish": {
       "provider": "github",
       "owner": "koyuawsmbrtn",
-      "repo": "bbz-cloud"
+      "repo": "bbz-cloud",
+      "token": "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"
     }
   },
   "repository": {
