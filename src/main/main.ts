@@ -41,19 +41,21 @@ ipcMain.on('zoom', (event, args) => {
 var fs = require('fs');
 var https = require('https');
 
-const updateserver =
-  'https://bbz-cloud-updater-mqyqbo42f-dclausen01.vercel.app';
-// eslint-disable-next-line prettier/prettier
+const updateserver = 'bbz-cloud-update-csbzsrzzj-dclausen01.vercel.app';
 const updaterFeedURL = `${updateserver}/update/${
   process.platform
 }/${app.getVersion()}`;
 
 function appUpdater() {
   autoUpdater.setFeedURL({ url: updaterFeedURL });
-  /* Log whats happening
-	TODO send autoUpdater events to renderer so that we could console log it in developer tools
-	You could alsoe use nslog or other logging to see what's happening */
-  autoUpdater.on('error', (err) => console.log(err));
+  autoUpdater.on('error', (err) =>
+    dialog.showMessageBox({
+      type: 'info',
+      buttons: ['OK'],
+      defaultId: 0,
+      message: `Ein Fehler ist aufgetreten: ${err}`,
+    })
+  );
   autoUpdater.on('checking-for-update', () =>
     console.log('checking-for-update')
   );
@@ -61,15 +63,8 @@ function appUpdater() {
   autoUpdater.on('update-not-available', () =>
     console.log('update-not-available')
   );
-
-  // Ask the user if update is available
   autoUpdater.on('update-downloaded', (event, releaseNotes, releaseName) => {
-    let message =
-      // eslint-disable-next-line prefer-template
-      app.getName() +
-      ' ' +
-      releaseName +
-      ' ist als Update verfügbar. Das Update wird automatisch installiert, wenn die App das nächste Mal gestartet wird.';
+    let message = `${app.getName()} ${releaseName} ist als Update verfügbar. Das Update wird automatisch installiert, wenn die App das nächste Mal gestartet wird.`;
     if (releaseNotes) {
       const splitNotes = releaseNotes.split(/[^\r]\n/);
       message += '\n\nRelease notes:\n';
@@ -204,12 +199,6 @@ const createWindow = async () => {
   if (checkOS && !isDevelopment) {
     // Initate auto-updates on macOs and windows
     appUpdater();
-    dialog.showMessageBox({
-      type: 'info',
-      buttons: ['OK'],
-      defaultId: 0,
-      message: 'Updater ist durchgelaufen',
-    });
   }
 };
 
