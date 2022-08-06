@@ -68,12 +68,12 @@
     "publish": {
       "provider": "github",
       "owner": "koyuawsmbrtn",
-      "repo": "bbzcloud"
+      "repo": "bbz-cloud"
     }
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/koyuawsmbrtn/bbzcloud.git"
+    "url": "git+https://github.com/koyuawsmbrtn/bbz-cloud.git"
   },
   "author": {
     "name": "koyu.space",
@@ -82,7 +82,7 @@
   },
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/koyuawsmbrtn/bbzcloud/issues"
+    "url": "https://github.com/koyuawsmbrtn/bbz-cloud/issues"
   },
   "keywords": [
     "electron",
@@ -95,7 +95,7 @@
     "hot",
     "reload"
   ],
-  "homepage": "https://github.com/koyuawsmbrtn/bbzcloud#readme",
+  "homepage": "https://github.com/koyuawsmbrtn/bbz-cloud#readme",
   "jest": {
     "testURL": "http://localhost/",
     "testEnvironment": "jsdom",
