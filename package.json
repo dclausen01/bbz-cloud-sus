@@ -50,7 +50,8 @@
     "linux": {
       "target": [
         "snap",
-        "deb"
+        "deb",
+        "pacman"
       ],
       "category": "Office",
       "desktop": {
@@ -148,7 +149,7 @@
     "css-minimizer-webpack-plugin": "^3.4.1",
     "detect-port": "^1.3.0",
     "electron": "^18.0.1",
-    "electron-builder": "^23.0.3",
+    "electron-builder": "^23.3.3",
     "electron-devtools-installer": "^3.2.0",
     "electron-notarize": "^1.2.1",
     "electron-rebuild": "^3.2.7",
@@ -192,6 +193,11 @@
     "webpack-merge": "^5.8.0"
   },
   "dependencies": {
+    "@babel/core": "^7.18.10",
+    "@babel/plugin-proposal-function-sent": "^7.18.6",
+    "@babel/preset-env": "^7.18.10",
+    "@babel/preset-react": "^7.18.6",
+    "electron-builder-squirrel-windows": "^23.3.3",
     "electron-debug": "^3.2.0",
     "electron-log": "^4.4.6",
     "electron-store": "^8.0.1",
