@@ -7,7 +7,7 @@
 /* eslint global-require: off, no-console: off, promise/always-return: off */
 
 import path from 'path';
-import os from 'os';
+// import os from 'os';
 import {
   app,
   BrowserWindow,
@@ -17,10 +17,9 @@ import {
   ipcMain,
   Menu,
   systemPreferences,
-  autoUpdater,
 } from 'electron';
-// import { autoUpdater } from 'electron-updater';
-import log from 'electron-log';
+import { autoUpdater } from 'electron-updater';
+// import log from 'electron-log';
 import { resolveHtmlPath } from './util';
 
 let zoomFaktor = 1.0;
@@ -41,59 +40,6 @@ ipcMain.on('zoom', (event, args) => {
 var fs = require('fs');
 var https = require('https');
 
-const updateserver = 'bbz-cloud-update-csbzsrzzj-dclausen01.vercel.app';
-const updaterFeedURL = `${updateserver}/update/${
-  process.platform
-}/${app.getVersion()}`;
-
-function appUpdater() {
-  autoUpdater.setFeedURL({ url: updaterFeedURL });
-  autoUpdater.on('error', (err) =>
-    dialog.showMessageBox({
-      type: 'info',
-      buttons: ['OK'],
-      defaultId: 0,
-      message: `Ein Fehler ist aufgetreten: ${err}`,
-    })
-  );
-  autoUpdater.on('checking-for-update', () =>
-    console.log('checking-for-update')
-  );
-  autoUpdater.on('update-available', () => console.log('update-available'));
-  autoUpdater.on('update-not-available', () =>
-    console.log('update-not-available')
-  );
-  autoUpdater.on('update-downloaded', (event, releaseNotes, releaseName) => {
-    let message = `${app.getName()} ${releaseName} ist als Update verfügbar. Das Update wird automatisch installiert, wenn die App das nächste Mal gestartet wird.`;
-    if (releaseNotes) {
-      const splitNotes = releaseNotes.split(/[^\r]\n/);
-      message += '\n\nRelease notes:\n';
-      splitNotes.forEach((notes) => {
-        message += `${notes}\n\n`;
-      });
-    }
-    // Ask user to update the app
-    dialog.showMessageBox(
-      {
-        type: 'question',
-        buttons: ['Installieren und sofort neu starten', 'Später installieren'],
-        defaultId: 0,
-        message:
-          // eslint-disable-next-line prefer-template
-          'Eine neue Version von ' + app.getName() + ' wurde heruntergeladen.',
-        detail: message,
-      },
-      (response) => {
-        if (response === 0) {
-          setTimeout(() => autoUpdater.quitAndInstall(), 1);
-        }
-      }
-    );
-  });
-  // init for updates
-  autoUpdater.checkForUpdates();
-}
-
 const RESOURCES_PATH = app.isPackaged
   ? path.join(process.resourcesPath, 'assets')
   : path.join(__dirname, '../../assets');
@@ -101,14 +47,6 @@ const RESOURCES_PATH = app.isPackaged
 const getAssetPath = (...paths: string[]): string => {
   return path.join(RESOURCES_PATH, ...paths);
 };
-
-/* export default class AppUpdater {
-  constructor() {
-    log.transports.file.level = 'info';
-    autoUpdater.logger = log;
-    autoUpdater.checkForUpdatesAndNotify();
-  }
-} */
 
 function isWindowsOrmacOS() {
   return process.platform === 'darwin' || process.platform === 'win32';
@@ -198,7 +136,7 @@ const createWindow = async () => {
   const checkOS = isWindowsOrmacOS();
   if (checkOS && !isDevelopment) {
     // Initate auto-updates on macOs and windows
-    appUpdater();
+    autoUpdater.checkForUpdatesAndNotify();
   }
 };
 
@@ -316,11 +254,6 @@ app.on('web-contents-created', (event, contents) => {
         const getAssetPath = (...paths: string[]): string => {
           return path.join(RESOURCES_PATH, ...paths);
         };
-        /* new Notification({
-          title: 'BBZ-Cloud',
-          body: 'Download abgeschlossen.',
-          icon: getAssetPath('icon.png'),
-        }).show(); */
         const options = {
           type: 'info',
           buttons: ['Ok'],
