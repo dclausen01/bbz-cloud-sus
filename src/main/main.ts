@@ -127,7 +127,6 @@ const createWindow = async () => {
   autoUpdater.logger = log;
   function sendStatusToWindow(text) {
     log.info(text);
-    mainWindow.webContents.send('message', text);
   }
   autoUpdater.on('checking-for-update', () => {
     sendStatusToWindow('Checking for update...');
@@ -145,7 +144,7 @@ const createWindow = async () => {
     sendStatusToWindow('Download progress...');
   });
   autoUpdater.on('update-downloaded', (ev, info) => {
-    sendStatusToWindow('Update downloaded; will install in 5 seconds');
+    sendStatusToWindow('Update downloaded');
   });
   autoUpdater.checkForUpdates();
 };
