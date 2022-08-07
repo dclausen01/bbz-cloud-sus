@@ -137,13 +137,7 @@ const createWindow = async () => {
     return { action: 'deny' };
   });
 
-  // AutoUpdater
-  autoUpdater.on('error', (error) => {
-    dialog.showErrorBox(
-      'Error: ',
-      error == null ? 'unknown' : (error.stack || error).toString()
-    );
-  });
+  // AutoUpdater - including debug loggin in %USERPROFILE%\AppData\Roaming\bbzcloud\logs\
   const log = require('electron-log');
   log.transports.file.level = 'debug';
   autoUpdater.logger = log;
