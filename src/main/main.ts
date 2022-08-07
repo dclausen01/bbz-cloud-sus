@@ -125,7 +125,29 @@ const createWindow = async () => {
   const log = require('electron-log');
   log.transports.file.level = 'debug';
   autoUpdater.logger = log;
-  autoUpdater.checkForUpdatesAndNotify();
+  function sendStatusToWindow(text) {
+    log.info(text);
+    mainWindow.webContents.send('message', text);
+  }
+  autoUpdater.on('checking-for-update', () => {
+    sendStatusToWindow('Checking for update...');
+  });
+  autoUpdater.on('update-available', (ev, info) => {
+    sendStatusToWindow('Update available.');
+  });
+  autoUpdater.on('update-not-available', (ev, info) => {
+    sendStatusToWindow('Update not available.');
+  });
+  autoUpdater.on('error', (ev, err) => {
+    sendStatusToWindow('Error in auto-updater.');
+  });
+  autoUpdater.on('download-progress', (_ev, progressObj) => {
+    sendStatusToWindow('Download progress...');
+  });
+  autoUpdater.on('update-downloaded', (ev, info) => {
+    sendStatusToWindow('Update downloaded; will install in 5 seconds');
+  });
+  autoUpdater.checkForUpdates();
 };
 
 /**
