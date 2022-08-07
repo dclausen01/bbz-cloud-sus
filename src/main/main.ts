@@ -7,23 +7,14 @@
 /* eslint global-require: off, no-console: off, promise/always-return: off */
 
 import path from 'path';
-// import os from 'os';
-import {
-  app,
-  BrowserWindow,
-  shell,
-  // Notification,
-  dialog,
-  ipcMain,
-  Menu,
-  systemPreferences,
-} from 'electron';
+import { app, BrowserWindow, shell, dialog, ipcMain, Menu } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import { resolveHtmlPath } from './util';
 
 let zoomFaktor = 1.0;
 let messageBoxIsDisplayed = false;
 
+// Communication with renderer for Autostart func (Mac/Windows)
 ipcMain.on('autostart', (event, args) => {
   app.setLoginItemSettings({
     openAtLogin: args,
@@ -31,13 +22,14 @@ ipcMain.on('autostart', (event, args) => {
   });
 });
 
+// Communication with renderer for Zooming the App
 ipcMain.on('zoom', (event, args) => {
   zoomFaktor = args;
   mainWindow.webContents.setZoomFactor(zoomFaktor);
 });
 
-var fs = require('fs');
-var https = require('https');
+// var fs = require('fs');
+// var https = require('https');
 
 const RESOURCES_PATH = app.isPackaged
   ? path.join(process.resourcesPath, 'assets')
@@ -46,10 +38,6 @@ const RESOURCES_PATH = app.isPackaged
 const getAssetPath = (...paths: string[]): string => {
   return path.join(RESOURCES_PATH, ...paths);
 };
-
-function isWindowsOrmacOS() {
-  return process.platform === 'darwin' || process.platform === 'win32';
-}
 
 let mainWindow: BrowserWindow | null = null;
 
@@ -63,10 +51,6 @@ const isDevelopment =
 
 if (isDevelopment) {
   require('electron-debug')();
-}
-
-function sendStatusToWindow(message) {
-  console.log(message);
 }
 
 const installExtensions = async () => {
