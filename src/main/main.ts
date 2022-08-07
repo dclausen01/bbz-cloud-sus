@@ -136,49 +136,18 @@ const createWindow = async () => {
     shell.openExternal(edata.url);
     return { action: 'deny' };
   });
-  autoUpdater.autoDownload = true;
-  const checkOS = isWindowsOrmacOS();
-  if (checkOS && !isDevelopment) {
-    autoUpdater.on('checking-for-update', function () {
-      sendStatusToWindow('Checking for update...');
-    });
 
-    autoUpdater.on('update-available', function (info) {
-      sendStatusToWindow('Update available.');
-    });
-
-    autoUpdater.on('update-not-available', function (info) {
-      sendStatusToWindow('Update not available.');
-    });
-
-    autoUpdater.on('error', function (err) {
-      sendStatusToWindow('Error in auto-updater.');
-    });
-
-    autoUpdater.on('download-progress', function (progressObj) {
-      let logMessage = `Download speed: ${progressObj.bytesPerSecond}`;
-      logMessage = `${logMessage} - Downloaded ${parseInt(
-        progressObj.percent,
-        10
-      )}%`;
-      logMessage = `${logMessage} (${progressObj.transferred}/${progressObj.total})`;
-      sendStatusToWindow(logMessage);
-    });
-
-    autoUpdater.on('update-downloaded', function (info) {
-      sendStatusToWindow('Update downloaded; will install in 1 seconds');
-    });
-
-    autoUpdater.on('update-downloaded', function (info) {
-      setTimeout(function () {
-        autoUpdater.quitAndInstall();
-      }, 1000);
-    });
-
-    autoUpdater.checkForUpdates();
-
-    // autoUpdater.checkForUpdatesAndNotify();
-  }
+  // AutoUpdater
+  autoUpdater.on('error', (error) => {
+    dialog.showErrorBox(
+      'Error: ',
+      error == null ? 'unknown' : (error.stack || error).toString()
+    );
+  });
+  const log = require('electron-log');
+  log.transports.file.level = 'debug';
+  autoUpdater.logger = log;
+  autoUpdater.checkForUpdatesAndNotify();
 };
 
 /**
