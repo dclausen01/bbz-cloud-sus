@@ -25,20 +25,14 @@ let zoomFaktor = 1.0;
 
 // PW- und Username-Variablen
 const defaultCreds = {
-  outlookUsername: '',
-  outlookPassword: '',
   moodleUsername: '',
   moodlePassword: '',
-  bbbUsername: '',
-  bbbPassword: '',
 };
 let creds = defaultCreds;
 
 // wiederholtes Neuladen der Seiten beim Einfügen verhindern
 const credsAreSet = {
-  outlook: false,
   moodle: false,
-  bbb: false,
 };
 
 if (
@@ -66,9 +60,7 @@ window.api.receive('getPassword', (result) => {
 window.api.send('getPassword');
 
 function resetCredsAreSet() {
-  credsAreSet.bbb = false;
   credsAreSet.moodle = false;
-  credsAreSet.outlook = false;
 }
 
 function reloadPage() {
@@ -101,15 +93,11 @@ function saveSettings() {
 
   // Save credentials
   creds = {
-    outlookUsername: document.getElementById('emailAdress').value,
-    outlookPassword: document.getElementById('outlookPW').value,
     moodleUsername: document
-      .getElementById('teacherID')
+      .getElementById('studentID')
       .value.toString()
       .toLowerCase(),
     moodlePassword: document.getElementById('moodlePW').value,
-    bbbUsername: document.getElementById('emailAdress').value,
-    bbbPassword: document.getElementById('bbbPW').value,
   };
   window.api.send('savePassword', creds);
 
@@ -246,11 +234,8 @@ export default class Main extends React.Component {
         const custom1_icon = localStorage.getItem(`custom1_icon`);
         $('#custom1_url').attr('value', custom1_url);
         $('#custom1_icon').attr('value', custom1_icon);
-        $('#emailAdress').attr('value', creds.outlookUsername);
-        $('#teacherID').attr('value', creds.moodleUsername);
-        $('#outlookPW').attr('value', creds.outlookPassword);
+        $('#studentID').attr('value', creds.moodleUsername);
         $('#moodlePW').attr('value', creds.moodlePassword);
-        $('#bbbPW').attr('value', creds.bbbPassword);
         $('#apps').append(
           `<a onClick="changeUrl('custom1')" target="_blank" class="link-custom1 app" style="cursor:pointer;"><img src="${custom1_icon}" height="20" title="Benutzerapp1"></a>`
         );
@@ -312,44 +297,19 @@ export default class Main extends React.Component {
       }
 
       /* Credentials in die settings schreiben (UX)
-      console.log(document.getElementById('emailAdress')?.value);
-      document.getElementById('emailAdress').value = creds.outlookUsername; */
+        console.log(document.getElementById('emailAdress')?.value);
+        document.getElementById('emailAdress').value = creds.outlookUsername; */
       // Credentials in die einzelnen WebViews einfügen
       document.querySelectorAll('webview').forEach((wv) => {
         wv.addEventListener('did-finish-load', async (event) => {
-          // Autofill Outlook
-          if (wv.id === 'wv-Outlook' && credsAreSet.outlook === false) {
-            credsAreSet.outlook = true;
-            wv.executeJavaScript(
-              `document.querySelector('#userNameInput').value = "${creds.outlookUsername}"; void(0);`
-            );
-            wv.executeJavaScript(
-              `document.querySelector('#passwordInput').value = "${creds.outlookPassword}"; void(0);`
-            );
-            wv.executeJavaScript(
-              // Hier soll der Button geklickt werden
-              `document.querySelector('#submitButton').click();`
-            );
-          }
           // Autofill Moodle
           if (wv.id === 'wv-BBZPortal' && credsAreSet.moodle === false) {
             credsAreSet.moodle = true;
-
             wv.executeJavaScript(
               `document.querySelector('#username').value = "${creds.moodleUsername}"; void(0);`
             );
             wv.executeJavaScript(
               `document.querySelector('#password').value = "${creds.moodlePassword}"; void(0);`
-            );
-          }
-          // Autofill
-          if (wv.id === 'wv-BigBlueButton' && credsAreSet.bbb === false) {
-            credsAreSet.bbb = true;
-            wv.executeJavaScript(
-              `document.querySelector('#session_email').value = "${creds.bbbUsername}"; void(0);`
-            );
-            wv.executeJavaScript(
-              `document.querySelector('#session_password').value = "${creds.bbbPassword}"; void(0);`
             );
           }
         });
@@ -476,69 +436,37 @@ export default class Main extends React.Component {
                 />
                 <label htmlFor="icon_website">Icon der Website</label>
                 <h2>Anmeldedaten speichern</h2>
-                <h3>E-Mail-Adresse (für Outlook und BigBlueButton)</h3>
-                <div id="views" className="twoColumn">
-                  <input
-                    type="text"
-                    id="emailAdress"
-                    size="50"
-                    name="emailAdress"
-                    placeholder="vorname.nachname@bbz-rd-eck.de"
-                    defaultValue=""
-                  />
-                  <label htmlFor="emailAdress">E-Mail-Adresse</label>
-                  <p />
-                  <h3>Lehrerkürzel (für Moodle)</h3>
-                  <input
-                    type="text"
-                    id="teacherID"
-                    size="50"
-                    name="teacherID"
-                    placeholder="NachV"
-                    defaultValue=""
-                  />
-                  <label htmlFor="teacherID">Lehrerkürzel</label>
-                  <p />
-                  <h3>Passworte</h3>
-                  <input
-                    type="password"
-                    id="outlookPW"
-                    size="30"
-                    name="outlookPW"
-                    defaultValue=""
-                  />
-                  <label htmlFor="outlookPW">Outlook</label>
-                  <p />
-                  <input
-                    type="password"
-                    id="moodlePW"
-                    size="30"
-                    name="moodlePW"
-                    placeholder=""
-                    defaultValue=""
-                  />
-                  <label htmlFor="moodlePW">Moodle</label>
-                  <p />
-                  <input
-                    type="password"
-                    id="bbbPW"
-                    size="30"
-                    name="bbbPW"
-                    placeholder=""
-                    defaultValue=""
-                  />
-                  <label htmlFor="bbbPW">BigBlueButton</label>
-                  <p />
-                </div>
-                <button onClick={saveSettings} id="sbb">
-                  Speichern
-                </button>
+                <h3>Benutzername für Moodle (meistens vorname.nachname)</h3>
+                <input
+                  type="text"
+                  id="studentID"
+                  size="50"
+                  name="studentID"
+                  placeholder=""
+                  defaultValue=""
+                />
+                <label htmlFor="studentID">Benutzername für Moodle</label>
+                <p />
+                <h3>Passwort für Moodle</h3>
+                <input
+                  type="password"
+                  id="moodlePW"
+                  size="30"
+                  name="moodlePW"
+                  placeholder=""
+                  defaultValue=""
+                />
+                <label htmlFor="moodlePW">Moodle</label>
+                <p />
               </div>
-              <p>
-                <b>BBZ Cloud App Version:</b> {versionApp} |{' '}
-                <b>Entwicklerin:</b> Leonie
-              </p>
+              <button onClick={saveSettings} id="sbb">
+                Speichern
+              </button>
             </div>
+            <p>
+              <b>BBZ Cloud App Version:</b> {versionApp} | <b>Entwicklerin:</b>{' '}
+              Leonie
+            </p>
           </div>
         </div>
         <div id="loading">

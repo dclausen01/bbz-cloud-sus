@@ -1,3 +1,4 @@
+/* eslint-disable promise/no-nesting */
 /* eslint-disable no-restricted-syntax */
 /* eslint-disable @typescript-eslint/dot-notation */
 /* eslint-disable no-empty */
@@ -15,7 +16,7 @@ import {
   shell,
   dialog,
   ipcMain,
-  // desktopCapturer,
+  desktopCapturer,
   Menu,
 } from 'electron';
 import { autoUpdater } from 'electron-updater';
@@ -43,7 +44,7 @@ ipcMain.on('zoom', (event, args) => {
 });
 
 ipcMain.on('savePassword', (event, cred) => {
-  keytar.setPassword('bbzcloud', 'credentials', JSON.stringify(cred));
+  keytar.setPassword('bbzcloud-sus', 'credentials', JSON.stringify(cred));
 });
 
 ipcMain.on('getPassword', (event) => {
@@ -56,7 +57,7 @@ ipcMain.on('getPassword', (event) => {
     bbbUsername: '',
     bbbPassword: '',
   };
-  const pw = keytar.getPassword('bbzcloud', 'credentials');
+  const pw = keytar.getPassword('bbzcloud-sus', 'credentials');
   // eslint-disable-next-line promise/always-return
   pw.then((result) => {
     if (result === null) {
@@ -65,16 +66,6 @@ ipcMain.on('getPassword', (event) => {
   }).catch(() => {
     mainWindow.webContents.send('getPassword', emptyCreds);
   });
-});
-
-/*
-ipcMain.handle('getDisplaySources', async (event) => {
-  desktopCapturer
-    .getSources({ types: ['window', 'screen'] })
-    .then((sources) => {
-      console.log('Main: ', JSON.stringify(sources));
-      return JSON.stringify(sources);
-    });
 });
 
 /*
@@ -187,7 +178,7 @@ const createWindow = async () => {
     if (process.platform === 'darwin') {
       dialog.showMessageBox(mainWindow, {
         message:
-          'Ein Update ist verfügbar! Download über kurzelinks.de/bbz-cloud',
+          'Ein Update ist verfügbar! Download über kurzelinks.de/bbz-cloud-sus',
         type: 'info',
         buttons: ['Ok'],
         title: 'Updater',
@@ -269,38 +260,21 @@ function isMicrosoft(url: string) {
   });
   return isms;
 }
-// Open third-party links in browser
+// Open third-party links in browser - used for BBB and Jitsi conferences
 app.on('web-contents-created', (event, contents) => {
   var handleRedirect = (e, url) => {
     if (
-      url.includes('https://bbb.bbz-rd-eck.de/html5client/join?sessionToken')
-      // || url.includes('meet.stashcat.com')
+      url.includes('bbb.bbz-rd-eck.de/bigbluebutton/api/join?') ||
+      url.includes('meet.stashcat.com')
     ) {
       e.preventDefault();
-      const videoWin = new BrowserWindow({
-        width: 1240,
-        height: 728,
-        minWidth: 700,
-        minHeight: 400,
-        webPreferences: {
-          preload: app.isPackaged
-            ? path.join(__dirname, 'preload.js')
-            : path.join(__dirname, '../../.erb/dll/preload.js'),
-          // nodeIntegration: false, // is default value after Electron v5
-          // contextIsolation: true, // protect against prototype pollution
-        },
+      // bad style, but necessary to close empty BrowserWindow
+      BrowserWindow.getAllWindows().forEach((w) => {
+        if (w.getTitle() === 'Electron' || w.getTitle() === 'bbzcloud') {
+          w.close();
+        }
       });
-      videoWin.webContents.session.setPermissionCheckHandler(
-        (webContents, permission, details) => {
-          return true;
-        }
-      );
-      videoWin.webContents.session.setPermissionRequestHandler(
-        (webContents, permission, callback, details) => {
-          callback(true);
-        }
-      );
-      videoWin.loadURL(url);
+      shell.openExternal(url);
     }
   };
   contents.on('will-redirect', handleRedirect);
