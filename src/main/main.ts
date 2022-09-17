@@ -10,14 +10,7 @@
 /* eslint global-require: off, no-console: off, promise/always-return: off */
 
 import path from 'path';
-import {
-  app,
-  BrowserWindow,
-  shell,
-  dialog,
-  ipcMain,
-  Menu,
-} from 'electron';
+import { app, BrowserWindow, shell, dialog, ipcMain, Menu } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import keytar from 'keytar';
 import { resolveHtmlPath } from './util';

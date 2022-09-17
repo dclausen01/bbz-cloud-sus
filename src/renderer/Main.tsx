@@ -16,7 +16,7 @@ import u1 from '../../assets/uebersicht.png';
 import u2 from '../../assets/doge.png';
 import sb from '../../assets/settings.png';
 import links from '../../assets/object.json';
-import logo from '../../assets/icon.png';
+import logo from '../../assets/logo.png';
 import version from '../../package.json';
 import isTeacherVar from '../../assets/isTeacher.json';
 
