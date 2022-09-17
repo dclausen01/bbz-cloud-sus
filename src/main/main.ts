@@ -16,7 +16,6 @@ import {
   shell,
   dialog,
   ipcMain,
-  desktopCapturer,
   Menu,
 } from 'electron';
 import { autoUpdater } from 'electron-updater';
